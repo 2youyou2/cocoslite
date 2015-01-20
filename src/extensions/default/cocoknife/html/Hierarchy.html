@@ -1,0 +1,24 @@
+<div class="hierarchy-header panel-header" style="display: block;">
+    <span class="hierarchy-header-title">Hierarchy</span>
+</div>
+
+<div id="hierarchy" class="tree-view no-icon">
+	<ul>
+		<li v-repeat="children" v-component="{{children.length > 0 ? 'hierarchy-folder' : 'hierarchy-file'}}">
+		</li>
+	</ul>
+</div>
+
+<script type="text/x-template" id="hierarchy-folder-template">
+    <div class="item hierarchy-folder {{selected ? 'selected' : ''}}" v-on="click: select(this, $event)">
+    	<span class="toggle {{ open ? 'open' : 'closed'}}" v-on="click: open = !open"></span>
+        {{name}}
+    </div>
+    <ul v-show="open">
+        <li v-repeat="children" v-component="{{children.length > 0 ? 'hierarchy-folder' : 'hierarchy-file'}}"></li>
+    </ul>
+</script>
+
+<script type="text/x-template" id="hierarchy-file-template">
+    <div class="item hierarchy-file {{selected ? 'selected' : ''}}" v-on="click: select(this, $event)">{{name}}</div>
+</script>
