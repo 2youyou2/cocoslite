@@ -1079,7 +1079,13 @@ define(function (require, exports, module) {
             editor[operation]();
             result.resolve();
         } else {
-            result.reject();
+            // is some need handle undo/redo, use EditorCommandHandlers.operation = function(){}
+            if(exports[operation]){
+                exports[operation]();
+                result.resolve();
+            } else {
+                result.reject();
+            }
         }
         
         return result.promise();
