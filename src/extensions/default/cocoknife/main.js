@@ -12,11 +12,6 @@ define(function (require, exports, module) {
         EventManager    = require("core/EventManager");
 
     require("core/Cocos");
-    require("core/ObjectInjector");
-    require("core/Hierarchy");
-    require("core/Inspector");
-    require("core/Undo");
-    require("core/ComponentManager");
 
     function getRelativePath(file){
         return file.fullPath.replace(ProjectManager.getProjectRoot().fullPath, "");
@@ -31,7 +26,6 @@ define(function (require, exports, module) {
         cc.loader.resPath = ProjectManager.getProjectRoot().fullPath;
 
         ck.SceneManager.loadScene(file.fullPath, function(scene){
-            EventManager.trigger("sceneLoaded", scene);
 
             // var d = new cc.DrawNode();
             // d.setPosition(200,200);
@@ -85,6 +79,8 @@ define(function (require, exports, module) {
             //               new cc.V2F_C4B_T2F({x:200,y:0}, cc.color.WHITE, {u:1,v:1}),
             //               new cc.V2F_C4B_T2F({x:300,y:300}, cc.color.WHITE, {u:1,v:0})];
             // mesh._innerSprite.rebindVertices();
+
+            EventManager.trigger("sceneLoaded", scene);
         });
     }
     
@@ -125,13 +121,13 @@ define(function (require, exports, module) {
         if (!visible) {
             ck.$editor.find(".view-pane").each(function(i, e){
                 e.style.display = "";
-                ck.$fgCanvas.style.display = ck.$bgCanvas.style.display = ck.$canvas.style.display = 'none';
+                ck.$fgCanvas.style.display = ck.$canvas.style.display = 'none';
             });
         }
         else {
             ck.$editor.find(".view-pane").each(function(i, e){
                 e.style.display = "none";
-                ck.$fgCanvas.style.display = ck.$bgCanvas.style.display = ck.$canvas.style.display = '';
+                ck.$fgCanvas[0].style.display = ck.$canvas[0].style.display = '';
             });    
         }
     };

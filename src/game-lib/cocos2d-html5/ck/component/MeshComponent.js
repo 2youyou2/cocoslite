@@ -2,7 +2,7 @@ var MeshComponent = ck.Component.extendComponent("MeshComponent", {
     ctor: function () {
         this._super(this);
         
-        this.properties = ["file"];
+        // this.properties = ["file"];
         this._innerMesh = new ck.MeshSprite();
         this._innerMesh.retain();
     },
@@ -14,8 +14,8 @@ var MeshComponent = ck.Component.extendComponent("MeshComponent", {
     setSubMesh: function(index, indices){
         this._innerMesh.setSubMesh(index, indices);
     },
-    getSubMesh: function(index){
-        return this._innerMesh.getSubMesh(index);
+    _getSubMeshes: function(index){
+        return this._innerMesh.subMeshes;
     },
 
     _setVertices: function(vertices){
@@ -39,3 +39,5 @@ MeshComponent.editorDir = "Mesh";
 
 ck.defineGetterSetter(_p, "materials", "_getMaterials");
 ck.defineGetterSetter(_p, "vertices", "_getVertices", "_setVertices");
+ck.defineGetterSetter(_p, "subMeshes", "_getSubMeshes");
+

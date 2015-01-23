@@ -24,7 +24,6 @@ ck.MeshSprite = cc.Node.extend({
     _bufferCapacity: 0,
     _buffer: null,
 
-    _indices: null,
     //0: vertex  1: indices
     _buffersVBO: null,
 
@@ -35,7 +34,6 @@ ck.MeshSprite = cc.Node.extend({
     _blendFunc: null,
     _dirty: false,
 
-    _texture: null,
     _materials: TextureArray(),
 
     _subMeshes: [],
@@ -64,11 +62,8 @@ ck.MeshSprite = cc.Node.extend({
         this._subMeshes[index] = new Uint16Array(indices);
     },
 
-    _setIndices: function(indices){
-    	this._indices = new Uint16Array(indices);
-    },
-    _getIndices: function(){
-    	return this._indices;
+    _getSubMeshes: function(){
+        return this._subMeshes;
     },
 
     _setVertices: function(vertices){
@@ -229,9 +224,9 @@ ck.MeshSprite = cc.Node.extend({
 });    
 
 var _p = ck.MeshSprite.prototype;
-ck.defineGetterSetter(_p, "indices", "_getIndices", "_setIndices");
 ck.defineGetterSetter(_p, "vertices", "_getVertices", "_setVertices");
 ck.defineGetterSetter(_p, "materials", "_getMaterials");
+ck.defineGetterSetter(_p, "subMeshes", "_getSubMeshes");
 // ck.defineGetterSetter(_p, "texture", "getTexture", "setTexture");
 
 ck.MeshSprite.create = function () {

@@ -72,6 +72,41 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
         return result;
     },
 
+    getClosestSeg: function (aPoint)
+    {
+        var pathVerts = this.pathVerts;
+        var closed = this.closed;
+        
+        var dist  = 100000000; //float.MaxValue;
+        var seg   = -1;
+        var count = closed ? pathVerts.length : pathVerts.length-1;
+        for (var i = 0; i < count; i++)
+        {
+            var next  = i == pathVerts.length -1 ? 0 : i + 1;
+            var pt    = this.getClosetPointOnLine(pathVerts[i], pathVerts[next], aPoint, true);
+            var tDist = ck.Point.sqrMagnitude(aPoint.sub(pt));
+            if (tDist < dist)
+            {
+                dist = tDist;
+                seg  = i;
+            }
+        }
+        if (!closed)
+        {
+            var tDist = ck.Point.sqrMagnitude(aPoint.sub(pathVerts[pathVerts.length - 1]));
+            if (tDist <= dist)
+            {
+                seg = pathVerts.length - 1;
+            }
+            tDist = ck.Point.sqrMagnitude(aPoint.sub(pathVerts[0]));
+            if (tDist <= dist)
+            {
+                seg = pathVerts.length - 1;
+            }
+        }
+        return seg;
+    },
+
     // static function
     getSegments: function(aPath)
     {
@@ -79,12 +114,12 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
         var currSegment = [];
         for (var i = 0; i < aPath.length; i++)
         {
-            currSegment.push(aPath[i]);
+            currSegment.push(ck.p(aPath[i]));
             if (this.isSplit(aPath, i))
             {
                 segments.push(currSegment);
                 currSegment = [];
-                currSegment.push(aPath[i]);
+                currSegment.push(ck.p(aPath[i]));
             }
         }
         segments.push(currSegment);
@@ -274,7 +309,23 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
 		norm.x *= -1;
 
 		return norm;
-	}
+	},
+
+    getClosetPointOnLine: function(aStart, aEnd, aPoint, aClamp)
+    {
+        var AP = aPoint.sub(aStart);
+        var AB = aEnd.sub(aStart);
+        var ab2 = AB.x*AB.x + AB.y*AB.y;
+        var ap_ab = AP.x*AB.x + AP.y*AB.y;
+        var t = ap_ab / ab2;
+        if (aClamp)
+        {
+             if (t < 0) t = 0;
+             else if (t > 1) t = 1;
+        }
+        var Closest = aStart.add(AB.mult(t));
+        return Closest;
+    }
 });
 
 var _p = TerrainPathComponent.prototype;

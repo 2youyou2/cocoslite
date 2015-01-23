@@ -41,8 +41,8 @@ define(function (require, exports, module) {
 	var Undo = function(){
 		var stack = new Undo.Stack();
 
-		this.objectPropertyChanged = function(obj, p, oldValue, newValue){
-			stack.add(new Undo.PropertyCmd(obj, p, oldValue, newValue));
+		this.objectPropertyChanged = function(oldValue, newValue, obj, p){
+			stack.add(new Undo.PropertyCmd(oldValue, newValue, obj, p));
 		};
 
 		this.beginUndoBatch = function(){
@@ -52,6 +52,14 @@ define(function (require, exports, module) {
 		this.endUndoBatch = function(){
 			stack.endBatch();
 		};
+
+		this.clear = function(){
+			stack = new Undo.Stack();
+		}
+
+		this.undoing = function(){
+			return stack.undoing;
+		}
 
 		EditorCommandHandlers.undo = function(){
 			if(stack.canUndo())
@@ -70,10 +78,12 @@ define(function (require, exports, module) {
 		this.stackPosition = -1;
 		this.savePosition = -1;
 		this.groupIndex = -1;
+		this.undoing = false;
 	};
 
 	extend(Undo.Stack.prototype, {
 		add: function(command) {
+			if(this.undoing) return;
 			if(!this.currentGroup){
 				// this._clearRedo();
 				// this.commands.push(command);
@@ -85,12 +95,14 @@ define(function (require, exports, module) {
 			}
 		},
 		beginBatch: function(cmd){
+			if(this.undoing) return;
 			this.groupIndex++;
 			if(this.currentGroup == null){
 				this.currentGroup = new Undo.GroupCommand();
 			}
 		},
 		endBatch: function(){
+			if(this.undoing) return;
 			this.groupIndex--;
 			if(this.groupIndex == -1 && this.currentGroup.cmds.length != 0){
 				this._clearRedo();
@@ -101,17 +113,21 @@ define(function (require, exports, module) {
 			}
 		},
 		undo: function() {
+			this.undoing = true;
 			this.commands[this.stackPosition].undo();
 			this.stackPosition--;
 			this.changed();
+			this.undoing = false;
 		},
 		canUndo: function() {
 			return this.stackPosition >= 0;
 		},
 		redo: function() {
+			this.undoing = true;
 			this.stackPosition++;
 			this.commands[this.stackPosition].redo();
 			this.changed();
+			this.undoing = false;
 		},
 		canRedo: function() {
 			return this.stackPosition < this.commands.length - 1;
@@ -164,15 +180,24 @@ define(function (require, exports, module) {
 		},
 		undo: function(){
 			if(typeof this.oldValue == "function")
-				this.oldValue();
-			else
+				this.oldValue(this.oldValue.params);
+			else if(this.oldValue.undo)
+				this.oldValue.undo();
+			else{
 				this.obj[this.p] = this.oldValue;
+				if(this.obj.valueChanged) this.obj.valueChanged();
+			}
+
 		},
 		redo: function(){
 			if(typeof this.newValue == "function")
-				this.newValue();
-			else
+				this.newValue(this.newValue.params);
+			else if(this.newValue.redo)
+				this.newValue.redo();
+			else{
 				this.obj[this.p] = this.newValue;
+				if(this.obj.valueChanged) this.obj.valueChanged();
+			}
 		}
 	});
 
@@ -201,6 +226,11 @@ define(function (require, exports, module) {
 		}
 	});
 
-	module.exports = new Undo();
 
+	var undo = new Undo()
+	module.exports = undo;
+
+	EventManager.on("sceneLoaded", function(event, s){
+        undo.clear();
+    });
 });

@@ -86,10 +86,6 @@ define(function (require, exports, module) {
 				var xInput = $input.find('.x-input')[0];
 				var yInput = $input.find('.y-input')[0];
 
-				$input.find('.x-input').change(function(){
-					var a = 1;
-				})
-
 				ck.defineGetterSetter($input, "value", function(){
 					var x = parseFloat(xInput.value);
   					var y = parseFloat(yInput.value);

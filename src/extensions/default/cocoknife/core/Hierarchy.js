@@ -47,21 +47,21 @@ define(function (require, exports, module) {
 
 					// } 
 					// else {
-						for(var i in this.$root.currentObjects){
-							this.$root.currentObjects[i].selected = false;
+						for(var i in _data.currentObjects){
+							_data.currentObjects[i].selected = false;
 						}
-						this.$root.currentObjects = [];
+						_data.currentObjects = [];
 					// }
 
 					if(obj) {
-						obj.selected = true;
-						this.$root.currentObjects.push(obj);
+						// obj.selected = true;
+						_data.currentObjects.push(obj);
 					}
 
 					var selectedObjs = [];
 
-					for(var i in this.$root.currentObjects) {
-						var o = this.$root.currentObjects[i];
+					for(var i in _data.currentObjects) {
+						var o = _data.currentObjects[i];
 						selectedObjs.push(_objMap[o.id]);
 					}
 					

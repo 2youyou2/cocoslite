@@ -20,5 +20,5 @@
 </script>
 
 <script type="text/x-template" id="hierarchy-file-template">
-    <div class="item hierarchy-file {{selected ? 'selected' : ''}}" v-on="click: select(this, $event)">{{name}}</div>
+    <div class="item hierarchy-file {{$data.selected ? 'selected' : ''}}" v-on="click: select(this, $event)">{{name}}</div>
 </script>

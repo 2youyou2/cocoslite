@@ -80,34 +80,79 @@ define(function (require, exports, module) {
 			
 			(function(p){
 				// if property is array
-				if(p.constructor == Array){
+				if(obj[p].constructor == Array){
 					var array = obj[p];
 					array._originPush = array.push;
 					array.push = function(item){
-						array._originPush.apply(array, arguments);
-						var index = array.length-1;
 
-						var undo = function(){
-							array.remove(index);
+						if(!Undo.undoing()){
+							(function(){
+								var index = array.length-1;
+
+								var undo = function(){
+									array.splice(index, 1);
+								}
+								var redo = function(){
+									array.push(item);
+								}
+								Undo.objectPropertyChanged(undo, redo);
+							})();
 						}
-						var redo = function(){
-							array.push(item);
-						}
-						Undo.objectPropertyChanged(undo, redo);
+
+						array._originPush.apply(array, item);
 					}
 
-					array._originRemove = array.remove;
-					array.remove = function(index){
-						var item = array[index];
-						array._originRemove.apply(array, arguments);
+					array._originSplice = array.splice;
+					array.splice = function(){
+						// var item = array[index];
+						var args = arguments;
 
-						var undo = function(){
-							array.splice(index,0,item);
+						if(!Undo.undoing()){
+							(function(){
+								var index  = args[0];
+								var number = args[1];
+
+								var oldItems = [];
+								for(var i=index; i<index+number; i++){
+									oldItems.push(array[i]);
+								}
+								var newItems = [];
+								for(var i=2; i<args.length; i++){
+									newItems.push(args[i]);
+								}
+
+								var undo = function(){
+									array.splice(index, newItems.length);
+									for(var i=0; i<oldItems.length; i++){
+										array.splice(index, 0, oldItems[i]);
+									}
+
+									if(array.valueChanged) array.valueChanged();
+								}
+								var redo = function(){
+									array._originSplice.apply(array, args);
+
+									if(array.valueChanged) array.valueChanged();
+								}
+								Undo.objectPropertyChanged(undo, redo);
+							})();
 						}
-						var redo = function(){
-							array.remove(index);
+
+						array._originSplice.apply(array, arguments);
+					}
+
+					array.set = function(index, value){
+
+						if(!Undo.undoing()){
+							(function(){
+								var oldValue = array[index];
+								var newValue = value;
+
+								Undo.objectPropertyChanged(oldValue, newValue, array, index);
+							})();
 						}
-						Undo.objectPropertyChanged(undo, redo);
+
+						array[index] = value;
 					}
 				}
 
