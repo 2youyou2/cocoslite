@@ -1,8 +1,8 @@
 define(function (require, exports, module) {
     "use strict";
 
-    var EventManager = require("core/EventManager"),
-    	Undo 		 = require("core/Undo");
+    var EventManager    = require("core/EventManager"),
+    	Undo 		    = require("core/Undo");
 
     var _scene = null;
 
@@ -80,8 +80,9 @@ define(function (require, exports, module) {
 			
 			(function(p){
 				// if property is array
-				if(obj[p].constructor == Array){
+				if(obj[p] && obj[p].constructor == Array){
 					var array = obj[p];
+
 					array._originPush = array.push;
 					array.push = function(item){
 
@@ -100,6 +101,7 @@ define(function (require, exports, module) {
 						}
 
 						array._originPush.apply(array, item);
+						EventManager.trigger("objectPropertyChanged", array, "");
 					}
 
 					array._originSplice = array.splice;
@@ -126,19 +128,18 @@ define(function (require, exports, module) {
 									for(var i=0; i<oldItems.length; i++){
 										array.splice(index, 0, oldItems[i]);
 									}
-
-									if(array.valueChanged) array.valueChanged();
 								}
 								var redo = function(){
 									array._originSplice.apply(array, args);
-
-									if(array.valueChanged) array.valueChanged();
+									
+									EventManager.trigger("objectPropertyChanged", array, "");
 								}
 								Undo.objectPropertyChanged(undo, redo);
 							})();
 						}
 
 						array._originSplice.apply(array, arguments);
+						EventManager.trigger("objectPropertyChanged", array, "");
 					}
 
 					array.set = function(index, value){
@@ -148,11 +149,19 @@ define(function (require, exports, module) {
 								var oldValue = array[index];
 								var newValue = value;
 
-								Undo.objectPropertyChanged(oldValue, newValue, array, index);
+								var undo = function(){
+									array.set(index, oldValue);
+								}
+								var redo = function(){
+									array.set(index, newValue);
+								}
+
+								Undo.objectPropertyChanged(undo, redo);
 							})();
 						}
 
 						array[index] = value;
+						EventManager.trigger("objectPropertyChanged", array, index);
 					}
 				}
 
@@ -165,10 +174,9 @@ define(function (require, exports, module) {
 					ck.defineGetterSetter(obj, p, dsc.get, function(){
 						var oldValue = this[p];
 
-						EventManager.trigger("beforePropertyChanged", this, p);
 						var func = this._originProperties[p].set;
 						func.apply(this, arguments);
-						EventManager.trigger("afterPropertyChanged", this, p);
+						EventManager.trigger("objectPropertyChanged", this, p);
 
 						var newValue = this[p];
 						Undo.objectPropertyChanged(oldValue, newValue, this, p);
@@ -180,9 +188,8 @@ define(function (require, exports, module) {
 					}, function(val){
 						var oldValue = this[p];
 
-						EventManager.trigger("beforePropertyChanged", p);
 						this._originProperties[p] = val;
-						EventManager.trigger("afterPropertyChanged", p);
+						EventManager.trigger("objectPropertyChanged", this, p);
 
 						var newValue = this[p];
 						Undo.objectPropertyChanged(oldValue, newValue, this, p);

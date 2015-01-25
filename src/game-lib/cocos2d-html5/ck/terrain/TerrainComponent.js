@@ -31,7 +31,7 @@ var TerrainComponent = ck.Component.extend({
     depth: 4,
     sufaceOffset: [0,0,0,0], 
     terrainMaterial: null,
-
+    
     // private
     _path: null,
     _terrainMaterial: null,
@@ -40,6 +40,9 @@ var TerrainComponent = ck.Component.extend({
 
     ctor: function () {
         this._super(this, ["MeshComponent", "TerrainPathComponent"]);
+        
+        this.addProperties(["fill", "fillY", "fillZ", "splitCorners", "smoothPath", "splistDist", "pixelsPerUnit", "vertexColor",
+                            "createCollider", "terrainMaterial"]);
     },
 
     onEnter: function(){

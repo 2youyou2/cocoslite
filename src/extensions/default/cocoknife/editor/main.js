@@ -3,4 +3,5 @@ define(function (require, exports, module) {
 
     require("editor/MeshEditor")
     require("editor/TerrainEditor")
+    require("editor/Control2D")
 });

@@ -23,9 +23,10 @@ define(function (require, exports, module) {
     var shift = false;
 
 
-    function valueChanged(){
+    EventManager.on("objectPropertyChanged", function(event, o, p){
+        if((o != obj && o != path && o != terrain && o != points) || !path) return;
         terrain.recreatePath();
-    }
+    });
 
     function renderScene (ctx, selectedObjects){
 		if(selectedObjects && selectedObjects.length == 1){
@@ -34,7 +35,6 @@ define(function (require, exports, module) {
             terrain = obj.getComponent("TerrainComponent");
             if(path){
                 points = path.pathVerts;
-                points.valueChanged = valueChanged;
                 render(ctx, obj);
             } else {
                 points = [];
@@ -97,7 +97,7 @@ define(function (require, exports, module) {
         if(control && points.length>1){
             currentPoint = null;
             points.splice(currentIndex, 1);
-            terrain.recreatePath();
+            // terrain.recreatePath();
         }
     }
 
@@ -119,7 +119,7 @@ define(function (require, exports, module) {
         }
 
         points.splice(index, 0, currentPoint);
-        terrain.recreatePath();
+        // terrain.recreatePath();
     }
 
     function preAddPoint(){
@@ -154,7 +154,7 @@ define(function (require, exports, module) {
 
             points.set(currentIndex, currentPoint);
 
-            terrain.recreatePath();
+            // terrain.recreatePath();
 
             return true;
         },

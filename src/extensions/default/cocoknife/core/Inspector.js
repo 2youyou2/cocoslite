@@ -19,44 +19,91 @@ define(function (require, exports, module) {
 	var _currentObject = null;
 
 
+	EventManager.on("objectPropertyChanged", function(event, o, p){
+		if(o.constructor == Array && p==""){
+			if(o._inspectorInput.innerChanged) return;
+			o._inspectorInput.empty();
+
+			createInputForArray(o, o._inspectorInput);
+			
+			return;
+		}
+		var input = o._inspectorInputMap[p];
+		if(input && !input.innerChanged) input.value = o[p];
+	});
+
 	function bindInput(input, obj, key){
+		obj._inspectorInputMap[key] = input;
+
 		input.value = obj[key];
 		input.innerChanged = false;
-
-		EventManager.on("afterPropertyChanged", function(event, o, p){
-			if(o == obj && p == key && !input.innerChanged) input.value = obj[key];
-		});
 
 		input.finishEdit = function(){
 			Undo.beginUndoBatch();
 
 			if(input.updateValue) input.updateValue();
 			input.innerChanged = true;
-			obj[key] = input.realValue ? input.realValue : input.value;
+
+			var newValue = input.realValue ? input.realValue : input.value;
+
+			if(obj.constructor == Array) {
+				obj.set(key, newValue); 
+				if(obj.valueChanged) obj.valueChanged();
+			}
+			else 
+				obj[key] = newValue;
+
 			input.innerChanged = false;
 
 			Undo.endUndoBatch();
 		}
 	};
 
-	function createInput(obj, key, el){
+	function createInputForArray(array, $input){
+		for(var i=0; i<array.length; i++){
+			var $item = $("<div class='array-item'>");
+			$item.append($("<span style='width:20%'>#"+i+"</span>"));
+			
+			var $innerInput = createInput(array, i, $item, true);
+			if($innerInput) $innerInput.css("width","70%");
+			$input.append($item);
+		}
+	}
+
+	function createInput(obj, key, el, discardKey){
 		var $input;
 		var value = obj[key];
 
 		if(typeof value != 'object') {
 			$input = $("<input>");
+			$input.css({"border-radius": "0px", "padding": "2px 2px", "border": "2px", "margin-bottom": "0px"});
 
 			var input = $input[0];
-	  		if(typeof value == 'string')
-	  			input.setAttribute('type', 'text');
-			else if(typeof value == 'boolean')
+	  		
+			if(typeof value == 'boolean'){
 	  			input.setAttribute('type', 'checkbox');
-	  		else if(typeof value == 'number')
-  			{
-  				$input.updateValue = function(){
-  					this.realValue = parseFloat(this.value);
-  				}
-  			}
+
+	  			ck.defineGetterSetter(input, "value", function(){
+					return input.checked;
+				}, function(val){
+					input.checked = val;
+				});
+
+				input.onclick = function(){
+	  				$input.finishEdit();
+				}
+			}
+
+	  		else {
+	  			if(typeof value == 'string')
+		  			input.setAttribute('type', 'text');
+		  		else if(typeof value == 'number') {
+	  				$input.updateValue = function(){
+	  					this.realValue = parseFloat(this.value);
+	  				}
+	  			}
+	  			$input.css({"width": "55%"});
+	  		}
 
 	  		input.onkeypress = function(event){
 	  			if(typeof $input.finishEdit == 'function' && event.keyCode == "13")    
@@ -81,15 +128,19 @@ define(function (require, exports, module) {
 		else {
 			// cc.p
 			if(value.x != undefined && value.y != undefined){
-				$input = $("<table><tr><td class='x-name'>x</td><td><input class='x-input'></td>\
-						   <td class='y-name'>y</td><td><input class='y-input'></td></tr></table>");
+				$input = $("<span>\
+							<span class='x-name'>X</span><span style='width:40%;margin:3px'><input class='x-input' style='width:98%'></span>\
+						    <span class='y-name'>Y</span><span style='width:40%;margin:3px'><input class='y-input' style='width:98%'></span>\
+						    </span>");
 				var xInput = $input.find('.x-input')[0];
 				var yInput = $input.find('.y-input')[0];
+
+				// xInput.style.width = yInput.style.width = "40%";
 
 				ck.defineGetterSetter($input, "value", function(){
 					var x = parseFloat(xInput.value);
   					var y = parseFloat(yInput.value);
-  					return cc.p(x, y);
+  					return ck.p(x, y);
 				}, function(val){
 					xInput.value = val.x;
 					yInput.value = val.y;
@@ -107,26 +158,39 @@ define(function (require, exports, module) {
 			  					$input.updateValue();
 			  				if($input.value.x != obj[key].x || $input.value.y != obj[key].y)
 			  					$input.finishEdit();
-			  			}    
+			  			}
 			  		}
 				});
+
+	  			$input.css({"width": "60%"});
+			} 
+			else if(value.constructor  == Array){
+				value._inspectorInputMap = {};
+
+				$input = $("<div class='array' style='margin-left:30px'>");
+				
+				createInputForArray(value, $input);
+
+				value._inspectorInput = $input;
 			}
 		}
 		
 		if($input){
+			if(!discardKey){
+				var $key = $('<span class="key">'+key+'</span>');
+				el.append($key);
+			}
 
 			bindInput($input, obj, key);
-			$input.attr('class', "value");
+			$input.addClass("value");
 			el.append($input);
-
-			var $key = $('<div class="key">'+key+'</div>');
-			el.append($key);
-			$key.css("height", $input[0].offsetHeight);
 		}
-
+		return $input;
 	}
 
 	function initComponentUI(component){
+		component._inspectorInputMap = {};
+
 		var el = $('<div>');
 		el.appendTo(_$inspector);
 		el.attr('id', component.classname);

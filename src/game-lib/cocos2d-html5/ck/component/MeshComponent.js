@@ -29,6 +29,33 @@ var MeshComponent = ck.Component.extendComponent("MeshComponent", {
         return this._innerMesh.rebindVertices();
     },
 
+    hitTest: function(worldPoint){
+        if(!this._innerMesh || !worldPoint) return;
+
+        var p = this._innerMesh.convertToNodeSpace(worldPoint);
+        p = cc.p(p);
+
+        var vertices = this.vertices;
+        var subMeshes = this.subMeshes;
+
+        for(var i=0; i<subMeshes.length; i++){
+            var indices = subMeshes[i];
+            for(var j=0; j<indices.length; j+=3){
+                var a = cc.p(vertices[indices[j  ]].vertices);
+                var b = cc.p(vertices[indices[j+1]].vertices);
+                var c = cc.p(vertices[indices[j+2]].vertices);
+
+                if(a.equal(b) && b.equal(c))
+                    continue;
+
+                if(p.inTriangle(a,b,c))
+                    return true;
+            }
+        }
+
+        return false;
+    },
+
     onEnter: function(target){
         target.addChild(this._innerMesh);
     }

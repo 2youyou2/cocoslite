@@ -185,7 +185,6 @@ define(function (require, exports, module) {
 				this.oldValue.undo();
 			else{
 				this.obj[this.p] = this.oldValue;
-				if(this.obj.valueChanged) this.obj.valueChanged();
 			}
 
 		},
@@ -196,7 +195,6 @@ define(function (require, exports, module) {
 				this.newValue.redo();
 			else{
 				this.obj[this.p] = this.newValue;
-				if(this.obj.valueChanged) this.obj.valueChanged();
 			}
 		}
 	});

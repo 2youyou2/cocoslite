@@ -118,18 +118,30 @@
 }
 
 .component .row {
-  margin: 3px 0px 3px 15px;
+  margin: 5px 0px 5px 15px;
 }
 
 .component .key {
-  width: 30%;
-  margin-top: 5px;
+  width: 40%;
+  /*margin-top: 5px;*/
+  cursor: default;
+  display: inline-block; 
 }
 
-.component .value {
+.component span{
+  display: inline-block; 
+}
+
+/*.component .value {
   position: absolute;
   right: 5px;
   width: 60%;
+}
+
+.component .value.array {
+  position: relative;
+  margin-left: 30px;
+  width: 100%;
 }
 
 .component table td{
@@ -153,7 +165,7 @@
   transition: border linear 180ms, box-shadow linear 180ms;
   border-left-width: 0px;
   border-right-width: 0px;
-}
+}*/
 
 .add-component {
   text-align: center;

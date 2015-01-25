@@ -38,7 +38,7 @@ define(function (require, exports, module) {
 				Undo.beginUndoBatch();
 
 				currentDelegate = null;
-				for(var i=0; i<delegates.length; i++){
+				for(var i=delegates.length-1; i>=0; i--){
 					if(delegates[i].onTouchBegan && delegates[i].onTouchBegan(touch)){
 						currentDelegate = delegates[i];
 						return true;
@@ -54,8 +54,8 @@ define(function (require, exports, module) {
 	        		}
 
 	        		var children = object.children;
-	        		for(var k in children){
-	        			var o = hitTest(children[k]);
+	        		for(var i=children.length-1; i>=0; i--){
+	        			var o = hitTest(children[i]);
 	        			if(o) return o;
 	        		}
 
@@ -74,11 +74,11 @@ define(function (require, exports, module) {
 	        		return;
 	        	}
 
-	        	for(var i in selectedObjects){
-	        		var t = selectedObjects[i].getComponent("TransformComponent");
-		            var delta = touch.getDelta();
-		            t.position = cc.pAdd(t.position, delta);
-	        	}
+	        	// for(var i in selectedObjects){
+	        	// 	var t = selectedObjects[i].getComponent("TransformComponent");
+		        //     var delta = touch.getDelta();
+		        //     t.position = cc.pAdd(t.position, delta);
+	        	// }
 	        },
 	        onTouchEnded: function(touch, event){
 				mousedown = false;
