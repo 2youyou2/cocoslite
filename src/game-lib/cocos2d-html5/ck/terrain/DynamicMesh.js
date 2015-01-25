@@ -11,9 +11,6 @@ _p.clear = function(){
 }
 
 _p.build = function(aMesh){
-	// aMesh._innerMesh.texture = "Rocky.png";
-	// aMesh._innerMesh._setIndices(this._indices);
-
 	aMesh.vertices = this._verts;
 	aMesh.rebindVertices();
 }
@@ -34,10 +31,7 @@ _p.addVertex = function() {
 
 	}
 
-	if(this._verts.length == 33)
-		var a = 1;
-
-	cc.log("vertex : %f, %f, %f, %f, %f     %i", aX, aY, aZ, aU, aV, this._verts.length);
+	// cc.log("vertex : %f, %f, %f, %f, %f     %i", aX, aY, aZ, aU, aV, this._verts.length);
 	var v = new cc.V3F_C4B_T2F({x:aX,y:aY,z:aZ}, this._color, {u:aU,v:aV});
 	this._verts.push(v);
 	return this._verts.length-1;

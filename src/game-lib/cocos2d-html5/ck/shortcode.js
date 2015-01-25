@@ -97,7 +97,6 @@ ck.Point.prototype.inTriangle = function(a, b, c){
     var delta = Math.abs(abc) - Math.abs(abp) - Math.abs(apc) - Math.abs(pbc);
 
     return Math.abs(delta) < 0.05;        
-
 }
 
 ck.Point.lerp = function(a, b, alpha){

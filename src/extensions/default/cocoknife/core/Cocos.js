@@ -5,15 +5,6 @@ define(function (require, exports, module) {
         EventManager    = require("core/EventManager"),
         ExtensionUtils  = brackets.getModule("utils/ExtensionUtils");
 
-    require("editor/main");
-
-    require("core/ObjectInjector");
-    require("core/Hierarchy");
-    require("core/Inspector");
-    require("core/Undo");
-    require("core/ComponentManager");
-    require("core/Selector");
-
     var ckJsList = [];    
     var selectedObjects;
 
