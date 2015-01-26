@@ -201,7 +201,7 @@ define(function (require, exports, module) {
         }
     }
 
-    Selector.addDelegate(delegate);
+    Selector.addDelegate(delegate, 10000);
 
 	EventManager.on("start", function(){
 		ck.$fgCanvas.addRender(renderScene);

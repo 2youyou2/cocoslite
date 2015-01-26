@@ -29,7 +29,7 @@ define(function (require, exports, module) {
             "project_type": "javascript",
             "debugMode" : 1,
             "showFPS" : true,
-            "frameRate" : 60,
+            "frameRate" : 10,
             "id" : "gameCanvas",
             "renderMode" : 0,
             "modules":[
@@ -79,7 +79,7 @@ define(function (require, exports, module) {
             }
             ctx.restore();
         }
-        setInterval(render, 0.03);
+        setInterval(render, 100);
     }
 
     function initCk(){
@@ -158,6 +158,8 @@ define(function (require, exports, module) {
             cc.view.enableRetina(false);
             cc.view._resizeEvent();
             cc.view.resizeWithBrowserSize(true);
+
+            // $scene[0].style.display = "none";
         };
         
         cc.game.run("gameCanvas");

@@ -11,7 +11,7 @@ define(function (require, exports, module) {
         return file.fullPath.replace(ProjectManager.getProjectRoot().fullPath, "");
     }
     
-    function MainScene(file, $container) {
+    function SceneEditor(file, $container) {
         this.file = file;
         this.$el = $('<div/>');
 
@@ -86,54 +86,54 @@ define(function (require, exports, module) {
      * Retrieves the file object for this view
      * return {!File} the file object for this view
      */
-    MainScene.prototype.getFile = function () {
+    SceneEditor.prototype.getFile = function () {
         return this.file;
     };
     
     /* 
      * Updates the layout of the view
      */
-    MainScene.prototype.updateLayout = function () {
+    SceneEditor.prototype.updateLayout = function () {
         cc.view._resizeEvent();
     };
 
     /* 
      * Destroys the view
      */
-    MainScene.prototype.destroy = function () {
+    SceneEditor.prototype.destroy = function () {
         
     };
     
     /* 
      * Refreshes scene with what's on disk
      */
-    MainScene.prototype.refresh = function () {
+    SceneEditor.prototype.refresh = function () {
 
     };
 
-    MainScene.prototype.notifyVisibilityChange = function (visible) {
+    SceneEditor.prototype.notifyVisibilityChange = function (visible) {
         if (!visible) {
             ck.$editor.find(".view-pane").each(function(i, e){
                 e.style.display = "";
-                ck.$fgCanvas[0].style.display = ck.$canvas[0].style.display = 'none';
+                ck.$canvas[0].style.display = ck.$fgCanvas[0].style.display = 'none';
             });
         }
         else {
             ck.$editor.find(".view-pane").each(function(i, e){
                 e.style.display = "none";
-                ck.$fgCanvas[0].style.display = ck.$canvas[0].style.display = '';
+                ck.$canvas[0].style.display = ck.$fgCanvas[0].style.display = '';
             });    
         }
     };
     
 
-    function _createMainScene(file, pane) {
+    function _createSceneEditor(file, pane) {
         var view = pane.getViewForPath(file.fullPath);
         
         if (view) {
             pane.showView(view);
         } else {
-            view = new MainScene(file, pane.$content);
+            view = new SceneEditor(file, pane.$content);
             view.pane = pane;
             pane.addView(view, true);
         }
@@ -146,7 +146,7 @@ define(function (require, exports, module) {
             return ret;
         },
         openFile: function (file, pane) {
-            return _createMainScene(file, pane);
+            return _createSceneEditor(file, pane);
         }
     });
     

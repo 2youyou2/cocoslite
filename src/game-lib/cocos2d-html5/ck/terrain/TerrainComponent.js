@@ -31,7 +31,7 @@ var TerrainComponent = ck.Component.extend({
     depth: 4,
     sufaceOffset: [0,0,0,0], 
     terrainMaterial: null,
-    
+
     // private
     _path: null,
     _terrainMaterial: null,
@@ -49,6 +49,7 @@ var TerrainComponent = ck.Component.extend({
         this._path = this.getComponent("TerrainPathComponent");
         this._mesh = this.getComponent("MeshComponent");
         this._dMesh = new ck.DynamicMesh();
+        this.recreatePath();
     },
 
     _getTerrainMaterial: function(){
@@ -61,7 +62,6 @@ var TerrainComponent = ck.Component.extend({
             if(err) throw err;
 
             self._terrainMaterial = ck.TerrainMaterial.deserialize(json);
-            self.recreatePath();
         });
     },
 

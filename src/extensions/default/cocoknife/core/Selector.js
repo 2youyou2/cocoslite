@@ -13,8 +13,13 @@ define(function (require, exports, module) {
     var currentDelegate = null;
     var delegates = [];
     
-    exports.addDelegate = function(delegate){
+    exports.addDelegate = function(delegate, priority){
+    	delegate.priority = priority ? priority : 0;
+
     	delegates.push(delegate);
+    	delegates.sort(function(a,b){
+    		return b.priority > a.priority;
+    	});
     }
     exports.removeDelegate = function(delegate){
     	var i;
@@ -38,7 +43,7 @@ define(function (require, exports, module) {
 				Undo.beginUndoBatch();
 
 				currentDelegate = null;
-				for(var i=delegates.length-1; i>=0; i--){
+				for(var i=0; i<delegates.length; i++){
 					if(delegates[i].onTouchBegan && delegates[i].onTouchBegan(touch)){
 						currentDelegate = delegates[i];
 						return true;

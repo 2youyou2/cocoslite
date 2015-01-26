@@ -12,9 +12,11 @@ define(function (require, exports, module) {
     require("core/Undo");
     require("core/ComponentManager");
     require("core/Selector");
-    require("core/MainScene");
-    
-    require("editor/MeshEditor")
-    require("editor/TerrainEditor")
-    require("editor/Control2D")
+
+    require("editor/SceneEditor");
+    require("editor/AnimationEditor");
+
+    require("editor/MeshEditor");
+    require("editor/TerrainEditor");
+    require("editor/Control2D");
 });
