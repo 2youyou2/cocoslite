@@ -21,7 +21,7 @@ define(function (require, exports, module) {
 
     function initConfig(){
         window.ck = {};
-        ck.engineDir = "game-lib/cocos2d-html5/";
+        ck.engineDir = "/Users/youyou/Desktop/workspace/cocos/cocos2d-js/frameworks/cocos2d-html5";
         ck.ckDir = ck.engineDir + "ck/"
 
         document.ccConfig = {
@@ -29,11 +29,13 @@ define(function (require, exports, module) {
             "project_type": "javascript",
             "debugMode" : 1,
             "showFPS" : true,
-            "frameRate" : 10,
+            "frameRate" : 15,
             "id" : "gameCanvas",
             "renderMode" : 0,
             "modules":[
-                "shape-nodes"
+                "cocoskit",
+                "shape-nodes",
+                "box2d"
             ]
         };
 
@@ -43,14 +45,14 @@ define(function (require, exports, module) {
 
     function initCanvas(){
 
-        ck.$editor = $('#editor-holder');
-        ck.$editor.append($scene);
+        // ck.$editor = $('#editor-holder');
+        // ck.$editor.append($scene);
 
         ck.$canvas = $scene.find('#gameCanvas');
 
         ck.$fgCanvas = $scene.find("#fgCanvas");
         cc._fgCanvas = ck.$fgCanvas[0];
-        ck.$fgCanvas[0].style.display = 'none';
+        // ck.$fgCanvas[0].style.display = 'none';
 
         ck.$fgCanvas._renderList = [];
         ck.$fgCanvas.addRender = function(func){
@@ -82,38 +84,6 @@ define(function (require, exports, module) {
         setInterval(render, 100);
     }
 
-    function initCk(){
-        ckJsList = [
-            "ck/ck.js",
-            "ck/shortcode.js",
-
-            "ck/core/EventDispatcher.js",
-            "ck/core/SceneManager.js",
-
-            // "ck/utils/Array.js",
-
-            "ck/object/GameObject.js",
-            "ck/object/MeshSprite.js",
-
-            "ck/component/ComponentManager.js",
-            "ck/component/Component.js",
-            "ck/component/SpriteComponent.js",
-            "ck/component/TransformComponent.js",
-            "ck/component/MeshComponent.js",
-
-            "ck/terrain/DynamicMesh.js",
-            "ck/terrain/TerrainComponent.js",
-            "ck/terrain/TerrainMaterial.js",
-            "ck/terrain/TerrainPathComponent.js",
-            "ck/terrain/Triangulator.js",
-
-        ];
-
-        for (var i=0; i<ckJsList.length; i++){
-            ckJsList[i] = document.ccConfig.engineDir + "/" + ckJsList[i];
-        }
-    }
-
     var initCocos = function(){
         var updateSize = function(){ 
             ck.$fgCanvas[0].setAttribute("width",  cc._canvas.width);
@@ -121,15 +91,11 @@ define(function (require, exports, module) {
         }
 
         cc.game.onStart = function(){
-            // load ck module, need after loading cocos moudles
-            cc.loader.loadJs(ckJsList, function (err) {
-                if (err) throw err;
 
-                EventManager.trigger("start");
-            });
+            // EventManager.trigger("start");
 
             // hack style
-            cc._canvas.style.backgroundColor = "";
+            // cc._canvas.style.backgroundColor = "";
 
             var $container = $scene.find('#Cocos2dGameContainer');
             $container.css({margin:'0'});
@@ -162,19 +128,24 @@ define(function (require, exports, module) {
             // $scene[0].style.display = "none";
         };
         
-        cc.game.run("gameCanvas");
+        // cc.game.run("gameCanvas");
+        cc.loader.loadJsWithImg = cc.loader.loadJs;
+        cc.game.prepare(function(){
+            cc.game._prepared = true;
+        });
     }
         
     appendDefaultStyle();
     initConfig();
     initCanvas();
-    initCk();
     initCocos();
-
-    EventManager.on("start", function(){
-    })
 
     EventManager.on("selectedObjects", function(event, objs){
         selectedObjects = objs;
     });
+
+    exports.initScene = function($container){
+        $container.append($scene);
+        cc.game.run("gameCanvas");
+    }
 });

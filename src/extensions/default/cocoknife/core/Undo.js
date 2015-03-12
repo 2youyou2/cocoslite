@@ -1,7 +1,9 @@
 define(function (require, exports, module) {
     "use strict";
 
-    var EventManager = require("core/EventManager"),
+    var EventManager      	  = require("core/EventManager"),
+    	DocumentManager		  = brackets.getModule("document/DocumentManager"),
+    	EditorManager         = brackets.getModule("editor/EditorManager"),
     	EditorCommandHandlers = brackets.getModule("editor/EditorCommandHandlers");
 
     // based on Backbone.js' inherits	
@@ -42,7 +44,9 @@ define(function (require, exports, module) {
 		var stack = new Undo.Stack();
 
 		this.objectPropertyChanged = function(oldValue, newValue, obj, p){
-			stack.add(new Undo.PropertyCmd(oldValue, newValue, obj, p));
+			var cmd = new Undo.PropertyCmd(oldValue, newValue, obj, p);
+			stack.add(cmd);
+			return cmd;
 		};
 
 		this.beginUndoBatch = function(){
@@ -61,14 +65,36 @@ define(function (require, exports, module) {
 			return stack.undoing;
 		}
 
-		EditorCommandHandlers.undo = function(){
+		this.dirty = function(){
+			return stack.dirty();
+		}
+
+		this.save = function(){
+			stack.save();
+		}
+
+		this.undo = EditorCommandHandlers.undo = function(){
 			if(stack.canUndo())
 	    		stack.undo();
 		}
 
-		EditorCommandHandlers.redo = function(){
+		this.redo = EditorCommandHandlers.redo = function(){
 			if(stack.canRedo())
 	    		stack.redo();
+		}
+
+		var undoList = [];
+		this.registerUndoType = function(key){
+			undoList.push(key);
+		}
+
+		this.canInjectDocument = function(doc){
+			var name = doc.file.name;
+			for(var k in undoList){
+				if(name.endWith(undoList[k]))
+					return true;
+			}
+			return false;
 		}
 	};
 
@@ -145,6 +171,9 @@ define(function (require, exports, module) {
 		},
 		changed: function() {
 			// do nothing, override
+
+			if(editor)
+				editor.trigger("change", editor, []);
 		}
 	});
 
@@ -177,6 +206,7 @@ define(function (require, exports, module) {
 			this.p = p;
 			this.oldValue = oldValue;
 			this.newValue = newValue;
+			this.dirty = true;
 		},
 		undo: function(){
 			if(typeof this.oldValue == "function")
@@ -186,7 +216,6 @@ define(function (require, exports, module) {
 			else{
 				this.obj[this.p] = this.oldValue;
 			}
-
 		},
 		redo: function(){
 			if(typeof this.newValue == "function")
@@ -231,4 +260,25 @@ define(function (require, exports, module) {
 	EventManager.on("sceneLoaded", function(event, s){
         undo.clear();
     });
+
+
+	var editor = null;
+    EditorManager.on("activeEditorChange", function(event, current, previous){
+    	editor = null;
+    	if(!current || !undo.canInjectDocument(current.document)) return;
+
+    	editor = current;
+    	editor._codeMirror.isClean = function(){
+    		return !undo.dirty();
+    	}
+        current.undo = undo.undo;
+        current.redo = undo.redo;
+    });
+
+
+    DocumentManager.on("documentSaved", function(event, doc){
+    	if(!editor || editor.document != doc) return;
+
+    	undo.save();
+    })
 });

@@ -5,18 +5,18 @@
 define(function (require, exports, module) {
     "use strict";
 
-    require("core/Cocos");
-    require("core/ObjectInjector");
-    require("core/Hierarchy");
-    require("core/Inspector");
-    require("core/Undo");
-    require("core/ComponentManager");
-    require("core/Selector");
+    var boot = require(["/Users/youyou/Desktop/workspace/cocos/cocos2d-js/frameworks/cocos2d-html5/CCBoot.js",
+                        "core/Cocos",
+                        "core/ObjectInjector",
+                        "core/Hierarchy",
+                        "core/Inspector",
+                        "core/Undo",
+                        "core/ComponentManager",
+                        "core/Selector",
+                        "core/Project",
 
-    require("editor/SceneEditor");
-    require("editor/AnimationEditor");
-
-    require("editor/MeshEditor");
-    require("editor/TerrainEditor");
-    require("editor/Control2D");
+                        "editor/SceneEditor",
+                        "editor/AnimationEditor",
+                        "editor/MeshEditor",
+                        "editor/Control2D"]);
 });

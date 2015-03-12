@@ -203,7 +203,7 @@ define(function (require, exports, module) {
 
     Selector.addDelegate(delegate, 10000);
 
-	EventManager.on("start", function(){
+	EventManager.on("projectOpen", function(){
 		ck.$fgCanvas.addRender(renderScene);
 	})
 });

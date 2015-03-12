@@ -6,7 +6,6 @@ define(function (require, exports, module) {
     	html    	 = require("text!html/Inspector.html"),
 	    Resizer 	 = brackets.getModule("utils/Resizer");
 
-    var $sidebar = $("#sidebar");
     var _$content = $(html);
     _$content.insertAfter(".content");
 
@@ -18,19 +17,23 @@ define(function (require, exports, module) {
 	var _selfPropertyChanged = false;
 	var _currentObject = null;
 
+	var _showing = false;
 
-	EventManager.on("objectPropertyChanged", function(event, o, p){
-		if(o.constructor == Array && p==""){
-			if(o._inspectorInput.innerChanged) return;
-			o._inspectorInput.empty();
+	function show(speed){
+		_showing = true;
 
-			createInputForArray(o, o._inspectorInput);
-			
-			return;
-		}
-		var input = o._inspectorInputMap[p];
-		if(input && !input.innerChanged) input.value = o[p];
-	});
+		if(speed == undefined) speed = 500;
+		_$content.animate({"right":"30px"}, speed);
+	}
+
+	function hide(speed){
+		_showing = false;
+
+		if(speed == undefined) speed = 500;
+		_$content.animate({"right":-_$content.width()-30+"px"}, speed);
+	}
+
+	hide(0);
 
 	function bindInput(input, obj, key){
 		obj._inspectorInputMap[key] = input;
@@ -238,7 +241,6 @@ define(function (require, exports, module) {
 		initObjectUI(obj);
 	};
 
-
 	EventManager.on("selectedObjects", function(event, objs){
 		if(objs)
 			selectedObject(objs[0]);
@@ -252,4 +254,23 @@ define(function (require, exports, module) {
 		initComponentUI(component);
 	});
 
+	EventManager.on("objectPropertyChanged", function(event, o, p){
+		if(o.constructor == Array && p==""){
+			if(o._inspectorInput.innerChanged) return;
+			o._inspectorInput.empty();
+
+			createInputForArray(o, o._inspectorInput);
+			
+			return;
+		}
+		var input = o._inspectorInputMap[p];
+		if(input && !input.innerChanged) input.value = o[p];
+	});
+
+
+	exports.show = show;
+	exports.hide = hide;
+	exports.__defineGetter__("showing", function(){
+		return _showing;
+	});
 });

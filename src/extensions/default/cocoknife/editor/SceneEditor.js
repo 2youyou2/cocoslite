@@ -1,157 +1,164 @@
 define(function (require, exports, module) {
     "use strict";
 
-    var CommandManager  = brackets.getModule("command/CommandManager"),
-        LanguageManager = brackets.getModule("language/LanguageManager"),
+    var EditorManager   = brackets.getModule("editor/EditorManager"),
+        DocumentManager = brackets.getModule("document/DocumentManager"),
         ProjectManager  = brackets.getModule("project/ProjectManager"),
-        MainViewFactory = brackets.getModule("view/MainViewFactory"),
-        EventManager    = require("core/EventManager");
+        EventManager    = require("core/EventManager"),
+        Undo            = require("core/Undo"),
+        Inspector       = require("core/Inspector"),
+        Cocos           = require("core/Cocos");
 
-    function getRelativePath(file){
-        return file.fullPath.replace(ProjectManager.getProjectRoot().fullPath, "");
-    }
-    
-    function SceneEditor(file, $container) {
-        this.file = file;
-        this.$el = $('<div/>');
-
-        $container.append(this.$el);
-
-        cc.loader.resPath = ProjectManager.getProjectRoot().fullPath;
-
-        ck.SceneManager.loadScene(file.fullPath, function(scene){
-
-            // var d = new cc.DrawNode();
-            // d.setPosition(200,200);
-            // scene.addChild(d);
-            // d.drawDot(cc.p(100,100), 20);
-
-            // var s = new ck.MeshSprite();
-            // scene.addChild(s);
-            // s.texture = "Rocky.png";
-
-            // s.indices = [0,1,2];
-            // s.vertices = [new cc.V3F_C4B_T2F({x:0,y:200,z:0}, cc.color.WHITE, {u:0,v:0}),
-            //               new cc.V3F_C4B_T2F({x:0,y:0,z:0}, cc.color.WHITE, {u:0,v:1}),
-            //               new cc.V3F_C4B_T2F({x:200,y:0,z:0}, cc.color.WHITE, {u:1,v:1}),
-            //               new cc.V3F_C4B_T2F({x:300,y:300,z:0}, cc.color.WHITE, {u:1,v:0})];
-            // s.rebindVertices();
-            // s.setPosition(200, 200);
-
-            // s.vertices[0].vertices = {x:-100, y:-100};
-            // s.rebindVertices();
-
-
-            cc.director.runScene(scene);
-
-
-            var o = new ck.GameObject();
-            o.setPosition(200,200)
-            o.setScale(40)
-            scene.addChild(o);
-
-            var c = o.addComponent("TerrainComponent");
-            c.terrainMaterial = "cave.tm";
-            c.pixelsPerUnit = 48;
-            c.smoothPath = true;
-            // c.splitCorners = false;
-
-            var path = o.getComponent("TerrainPathComponent");
-            path.pathVerts = [ck.p(9,2.1), ck.p(5,0), ck.p(0,0), ck.p(0,5), ck.p(7,7)];
-            // path.pathVerts = [ck.p(0,0), ck.p(5,0)];
-            // path.pathVerts = [ck.p(200,200), ck.p(200,0), ck.p(0,0), ck.p(0,200)];
-            path.closed = true;
-            
-
-            var mesh = o.getComponent("MeshComponent");
-            mesh.materials.push("Rocky.png");
-            mesh.materials.push("RockyFill.png");
-
-            // mesh._innerSprite.indices = [0,1,2,0,2,3];
-            // mesh._innerSprite.vertices = [new cc.V2F_C4B_T2F({x:0,y:200}, cc.color.WHITE, {u:0,v:0}),
-            //               new cc.V2F_C4B_T2F({x:0,y:0}, cc.color.WHITE, {u:0,v:1}),
-            //               new cc.V2F_C4B_T2F({x:200,y:0}, cc.color.WHITE, {u:1,v:1}),
-            //               new cc.V2F_C4B_T2F({x:300,y:300}, cc.color.WHITE, {u:1,v:0})];
-            // mesh._innerSprite.rebindVertices();
-
-            EventManager.trigger("sceneLoaded", scene);
-        });
-    }
-    
-    /**
-     * View Interface functions
-     */
-
-    /* 
-     * Retrieves the file object for this view
-     * return {!File} the file object for this view
-     */
-    SceneEditor.prototype.getFile = function () {
-        return this.file;
-    };
-    
     /* 
      * Updates the layout of the view
      */
-    SceneEditor.prototype.updateLayout = function () {
-        cc.view._resizeEvent();
+    // SceneEditor.prototype.updateLayout = function () {
+    //     if(cc.view)
+    //         cc.view._resizeEvent();
+    // };
+
+
+    var editor = null;
+    var scene = null;
+
+    Undo.registerUndoType(".js.scene");
+
+    function initEditor(current){
+        editor = current;
+
+        editor.document.getText = function(){
+            var s = JSON.stringify(scene, null, '\t');
+            return s;
+        }
+
+        var $el = $("<div>");
+        Cocos.initScene($el);
+
+        editor.$el.find(".CodeMirror-scroll").css("display", "none");
+        editor.$el.append($el);
     };
 
-    /* 
-     * Destroys the view
-     */
-    SceneEditor.prototype.destroy = function () {
+    function test(scene){
+        // var o = new ck.GameObject();
+        // o.setPosition(200,200)
+        // o.setScale(40)
+        // scene.addChild(o);
+
+        // var c = o.addComponent("TerrainComponent");
+        // c.terrainMaterial = "cave.tm";
+        // c.pixelsPerUnit = 48;
+        // c.smoothPath = true;
+        // // c.splitCorners = false;
+
+        // var path = o.getComponent("TerrainPathComponent");
+        // path.pathVerts = [ck.p(9,2.1), ck.p(5,0), ck.p(0,0), ck.p(0,5), ck.p(7,7)];
+        // // path.pathVerts = [ck.p(0,0), ck.p(5,0)];
+        // // path.pathVerts = [ck.p(200,200), ck.p(200,0), ck.p(0,0), ck.p(0,200)];
+        // path.closed = true;
         
-    };
-    
-    /* 
-     * Refreshes scene with what's on disk
-     */
-    SceneEditor.prototype.refresh = function () {
 
-    };
-
-    SceneEditor.prototype.notifyVisibilityChange = function (visible) {
-        if (!visible) {
-            ck.$editor.find(".view-pane").each(function(i, e){
-                e.style.display = "";
-                ck.$canvas[0].style.display = ck.$fgCanvas[0].style.display = 'none';
-            });
-        }
-        else {
-            ck.$editor.find(".view-pane").each(function(i, e){
-                e.style.display = "none";
-                ck.$canvas[0].style.display = ck.$fgCanvas[0].style.display = '';
-            });    
-        }
-    };
-    
-
-    function _createSceneEditor(file, pane) {
-        var view = pane.getViewForPath(file.fullPath);
-        
-        if (view) {
-            pane.showView(view);
-        } else {
-            view = new SceneEditor(file, pane.$content);
-            view.pane = pane;
-            pane.addView(view, true);
-        }
-        return new $.Deferred().resolve().promise();
+        // var mesh = o.getComponent("MeshComponent");
+        // mesh.materials.push("Rocky.png");
+        // mesh.materials.push("RockyFill.png");
     }
 
-    MainViewFactory.registerViewFactory({
-        canOpenFile: function (fullPath) {
-            var ret = fullPath.endWith("js.scene");
-            return ret;
-        },
-        openFile: function (file, pane) {
-            return _createSceneEditor(file, pane);
+    EditorManager.on("activeEditorChange", function(event, current, previous){
+
+        if(previous && previous == editor){
+            EventManager.trigger("selectedObjects", []);
+        }   
+        
+        editor = null;
+
+        if(!current || !current.document.file.name.endWith(".js.scene")) {
+            
+            if(Inspector.showing)
+                Inspector.hide();
+
+            return;
         }
+
+
+        if(!Inspector.showing)
+            Inspector.show();
+
+        initEditor(current);
+
+        cc.loader.resPath = ProjectManager.getProjectRoot().fullPath;
+
+        var file = editor.document.file;
+        ck.SceneManager.loadScene(file.fullPath, function(s){
+
+            scene = s;
+
+            cc.director.runScene(s);
+
+            test(s);
+
+            EventManager.trigger("sceneLoaded", s);
+        }, true);
     });
-    
-    String.prototype.endWith = function(endStr) {
-        var d=this.length-endStr.length;
-        return (d>=0 && this.lastIndexOf(endStr)==d);
-    };
+
+
+    EventManager.on("projectOpen", function(){
+        cc.Scene.prototype.toJSON = function(){
+            var json = {};
+            json.root = {};
+            json.root.res = this.res;
+            var children = json.root.children = [];
+
+            for(var k in this.children){
+                var child = this.children[k];
+                if(child.constructor == ck.GameObject){
+                    var cj = child.toJSON();
+                    children.push(cj);
+                }
+            }
+
+            return json;
+        }
+
+
+        ck.GameObject.prototype.toJSON = function(){
+            var json = {};
+
+            var components = json.components = [];
+
+            var cs = this.components;
+            for(var k in cs){
+                var c = cs[k];
+                components.push(c.toJSON());
+            }
+
+            for(var k in this.children){
+                var child = this.children[k];
+                if(child.constructor == ck.GameObject){
+                    
+                    if(json.children == null)
+                        json.children = [];
+
+                    var cj = child.toJSON();
+                    json.children.push(cj);
+                }
+            }
+
+            return json;
+        }
+
+
+        ck.Component.prototype.toJSON = function(){
+            var json = {};
+            json.class = this.classname;
+
+            for(var i in this.properties){
+                var k = this.properties[i];
+
+                if(this["toJSON"+k])
+                    json[k] = this["toJSON"+k]();
+                else
+                    json[k] = this[k];
+            }
+            return json;
+        }
+    })
 });
