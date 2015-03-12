@@ -59,7 +59,6 @@ define(function (require, exports, module) {
     require("thirdparty/CodeMirror2/addon/search/match-highlighter");
     require("thirdparty/CodeMirror2/addon/search/searchcursor");
     require("thirdparty/CodeMirror2/keymap/sublime");
-    require("thirdparty/vue");
 
     // Load dependent modules
     var AppInit                 = require("utils/AppInit"),
