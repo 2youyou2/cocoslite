@@ -86,7 +86,7 @@ define(function (require, exports, module) {
 			if(typeof value == 'boolean'){
 	  			input.setAttribute('type', 'checkbox');
 
-	  			ck.defineGetterSetter(input, "value", function(){
+	  			cl.defineGetterSetter(input, "value", function(){
 					return input.checked;
 				}, function(val){
 					input.checked = val;
@@ -122,7 +122,7 @@ define(function (require, exports, module) {
 	  			}    
 	  		}
 
-  			ck.defineGetterSetter($input, "value", function(){
+  			cl.defineGetterSetter($input, "value", function(){
 				return input.value;
 			}, function(val){
 				input.value = val;
@@ -140,10 +140,10 @@ define(function (require, exports, module) {
 
 				// xInput.style.width = yInput.style.width = "40%";
 
-				ck.defineGetterSetter($input, "value", function(){
+				cl.defineGetterSetter($input, "value", function(){
 					var x = parseFloat(xInput.value);
   					var y = parseFloat(yInput.value);
-  					return ck.p(x, y);
+  					return cl.p(x, y);
 				}, function(val){
 					xInput.value = val.x;
 					yInput.value = val.y;

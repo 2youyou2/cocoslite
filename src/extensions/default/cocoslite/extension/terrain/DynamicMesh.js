@@ -1,8 +1,8 @@
-ck.DynamicMesh = function(){
+cl.DynamicMesh = function(){
 	this.clear();
 }
 
-var _p = ck.DynamicMesh.prototype;
+var _p = cl.DynamicMesh.prototype;
 _p.clear = function(){
 	this._indices = [];
 	this._verts = [];
@@ -69,4 +69,4 @@ _p._getVertCount = function(){
 	return this._verts.length;
 }
 
-ck.defineGetterSetter(_p, "vertCount", "_getVertCount");
+cl.defineGetterSetter(_p, "vertCount", "_getVertCount");

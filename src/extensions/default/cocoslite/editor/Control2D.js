@@ -204,6 +204,6 @@ define(function (require, exports, module) {
     Selector.addDelegate(delegate, 10000);
 
 	EventManager.on("projectOpen", function(){
-		ck.$fgCanvas.addRender(renderScene);
+		cl.$fgCanvas.addRender(renderScene);
 	})
 });

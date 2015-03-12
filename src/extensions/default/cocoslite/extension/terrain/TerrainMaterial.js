@@ -1,4 +1,4 @@
-ck.TerrainDirection = 
+cl.TerrainDirection = 
 {
 	Top    : "Top",
 	Left   : "Left",
@@ -6,15 +6,15 @@ ck.TerrainDirection =
 	Bottom : "Bottom"
 }
 
-ck.TerrainSegmentDescription = function(applyTo) {
+cl.TerrainSegmentDescription = function(applyTo) {
 	this.zOffset = 0;
 	this.yOffset = 0;
 	this.capOffset = 0;
-	this.applyTo = applyTo ? applyTo : ck.TerrainDirection.Top;
+	this.applyTo = applyTo ? applyTo : cl.TerrainDirection.Top;
 }
 
 
-ck.TerrainMaterial = function() {
+cl.TerrainMaterial = function() {
 	this._fillMaterialFile = "";
 	this._edgeMaterialFile = "";
 
@@ -23,12 +23,12 @@ ck.TerrainMaterial = function() {
 
 	this.descriptors = [];
 
-	for(var k in ck.TerrainDirection){
-		this.descriptors.push(new ck.TerrainSegmentDescription(ck.TerrainDirection[k]));
+	for(var k in cl.TerrainDirection){
+		this.descriptors.push(new cl.TerrainSegmentDescription(cl.TerrainDirection[k]));
 	}
 }
 
-var _p = ck.TerrainMaterial.prototype;
+var _p = cl.TerrainMaterial.prototype;
 
 _p._getFillMaterial = function(){
 	return this._fillMaterial;
@@ -66,7 +66,7 @@ _p.getDescriptor = function(aDirection) {
     if (descriptors.length > 0) {
         return descriptors[0];
     }
-    return new ck.TerrainSegmentDescription();
+    return new cl.TerrainSegmentDescription();
 }
 
 _p.toUV = function(aPixelUVs) {
@@ -94,10 +94,10 @@ _p.has = function(aDirection){
 }
 
 
-ck.defineGetterSetter(_p, "fillMaterial", "_getFillMaterial", "_setFillMaterial");
-ck.defineGetterSetter(_p, "edgeMaterial", "_getEdgeMaterial", "_setEdgeMaterial");
+cl.defineGetterSetter(_p, "fillMaterial", "_getFillMaterial", "_setFillMaterial");
+cl.defineGetterSetter(_p, "edgeMaterial", "_getEdgeMaterial", "_setEdgeMaterial");
 
-ck.TerrainMaterial.prototype.initWithFile = function(file, cb){
+cl.TerrainMaterial.prototype.initWithFile = function(file, cb){
 	var self = this;
 
 	if(file && this.file != file){
@@ -117,7 +117,7 @@ ck.TerrainMaterial.prototype.initWithFile = function(file, cb){
 	}
 }
 
-ck.TerrainMaterial.prototype.initWithJson = function(json){
+cl.TerrainMaterial.prototype.initWithJson = function(json){
 
 	this.fillMaterial = json.fillMaterial;
 	this.edgeMaterial = json.edgeMaterial;

@@ -1,4 +1,4 @@
-ck.TerrainFillMode = 
+cl.TerrainFillMode = 
 {
     /// <summary>
     /// The interior of the path will be filled, and edges will be treated like a polygon.
@@ -18,8 +18,8 @@ ck.TerrainFillMode =
     InvertedClosed: "InvertedClosed"
 }
 
-var TerrainComponent = ck.Component.extend({
-    fill: ck.TerrainFillMode.Closed,
+var TerrainComponent = cl.Component.extend({
+    fill: cl.TerrainFillMode.Closed,
     fillY: 0,
     fillZ: -0.5,
     splitCorners: true,
@@ -36,7 +36,7 @@ var TerrainComponent = ck.Component.extend({
     _path: null,
     _terrainMaterial: null,
     _dMesh: null,
-    _unitsPerUV: ck.p(1,1),
+    _unitsPerUV: cl.p(1,1),
 
     ctor: function () {
         this._super(this, ["MeshComponent", "TerrainPathComponent"]);
@@ -44,13 +44,13 @@ var TerrainComponent = ck.Component.extend({
         this.addProperties(["fill", "fillY", "fillZ", "splitCorners", "smoothPath", "splistDist", "pixelsPerUnit", "vertexColor",
                             "createCollider", "terrainMaterial"]);
 
-        this._terrainMaterial = new ck.TerrainMaterial();
+        this._terrainMaterial = new cl.TerrainMaterial();
     },
 
     onEnter: function(){
         this._path = this.getComponent("TerrainPathComponent");
         this._mesh = this.getComponent("MeshComponent");
-        this._dMesh = new ck.DynamicMesh();
+        this._dMesh = new cl.DynamicMesh();
         this.recreatePath();
     },
 
@@ -81,8 +81,8 @@ var TerrainComponent = ck.Component.extend({
             this._mesh.materials.set(0, terrainMaterial.fillMaterial);
             this._mesh.materials.set(1, terrainMaterial.edgeMaterial);
 
-            if (!terrainMaterial.has(ck.TerrainDirection.Left) &&
-                !terrainMaterial.has(ck.TerrainDirection.Right))
+            if (!terrainMaterial.has(cl.TerrainDirection.Left) &&
+                !terrainMaterial.has(cl.TerrainDirection.Right))
             {
                 this.splitCorners = false;
             }
@@ -98,7 +98,7 @@ var TerrainComponent = ck.Component.extend({
             return;
         }
 
-        this._unitsPerUV = ck.p(5.33333, 5.33333);
+        this._unitsPerUV = cl.p(5.33333, 5.33333);
 
         var segments = [];
         var self = this;
@@ -115,15 +115,15 @@ var TerrainComponent = ck.Component.extend({
         var submesh1 = this._dMesh.getCurrentTriangleList();
         
         // add a fill if the user desires
-        if (fill == ck.TerrainFillMode.Skirt && terrainMaterial.fillMaterial != null)
+        if (fill == cl.TerrainFillMode.Skirt && terrainMaterial.fillMaterial != null)
         {
             this._addFill(true);
         }
-        else if ((fill == ck.TerrainFillMode.Closed || fill == ck.TerrainFillMode.InvertedClosed) && terrainMaterial.fillMaterial != null)
+        else if ((fill == cl.TerrainFillMode.Closed || fill == cl.TerrainFillMode.InvertedClosed) && terrainMaterial.fillMaterial != null)
         {
             this._addFill(false);
         }
-        else if (fill == ck.TerrainFillMode.None) { }
+        else if (fill == cl.TerrainFillMode.None) { }
         var submesh2 = this._dMesh.getCurrentTriangleList(submesh1.length);
 
         this._mesh.setSubMesh(1, submesh1);
@@ -134,7 +134,7 @@ var TerrainComponent = ck.Component.extend({
     // private function
 
     _getDescription: function (aSegment) {
-        var dir = this._path.getDirectionWithSegment(aSegment, 0, this.fill == ck.TerrainFillMode.InvertedClosed);
+        var dir = this._path.getDirectionWithSegment(aSegment, 0, this.fill == cl.TerrainFillMode.InvertedClosed);
         return this._terrainMaterial.getDescriptor(dir);
     },
 
@@ -176,8 +176,8 @@ var TerrainComponent = ck.Component.extend({
         aSegment[aSegment.length-1].subToSelf(cc.pMult(capRightSlideDir, desc.capOffset));
 
         for (var i = 0; i < aSegment.length-1; i++) {
-            var norm1   = ck.p();
-            var norm2   = ck.p();
+            var norm1   = cl.p();
+            var norm2   = cl.p();
             var   length  = cc.pDistance(aSegment[i+1], aSegment[i]);
             var   repeats = Math.max(1, Math.floor(length / bodyWidth));
             
@@ -190,17 +190,17 @@ var TerrainComponent = ck.Component.extend({
                 body   = this.terrainMaterial.toUV( desc.body[bodyID] );
                 var pos1, pos2, n1, n2;
 
-                pos1 = ck.Point.lerp(aSegment[i], aSegment[i + 1], (t - 1) / repeats);
-                pos2 = ck.Point.lerp(aSegment[i], aSegment[i + 1], t / repeats);
-                n1   = ck.Point.lerp(norm1, norm2, (t - 1) / repeats);
-                n2   = ck.Point.lerp(norm1, norm2, t / repeats);
+                pos1 = cl.Point.lerp(aSegment[i], aSegment[i + 1], (t - 1) / repeats);
+                pos2 = cl.Point.lerp(aSegment[i], aSegment[i + 1], t / repeats);
+                n1   = cl.Point.lerp(norm1, norm2, (t - 1) / repeats);
+                n2   = cl.Point.lerp(norm1, norm2, t / repeats);
 
                 var d    = (body.height / 2) * unitsPerUV.y;
-                var yOff = fill == ck.TerrainFillMode.InvertedClosed ? -desc.yOffset : desc.yOffset;
-                var   v1 = dMesh.addVertex(pos1.x + n1.x * (d + yOff), pos1.y + n1.y * (d + yOff), desc.zOffset, body.x,    fill == ck.TerrainFillMode.InvertedClosed ? body.yMax : body.y);
-                var   v2 = dMesh.addVertex(pos1.x - n1.x * (d - yOff), pos1.y - n1.y * (d - yOff), desc.zOffset, body.x,    fill == ck.TerrainFillMode.InvertedClosed ? body.y    : body.yMax);
-                var   v3 = dMesh.addVertex(pos2.x + n2.x * (d + yOff), pos2.y + n2.y * (d + yOff), desc.zOffset, body.xMax, fill == ck.TerrainFillMode.InvertedClosed ? body.yMax : body.y);
-                var   v4 = dMesh.addVertex(pos2.x - n2.x * (d - yOff), pos2.y - n2.y * (d - yOff), desc.zOffset, body.xMax, fill == ck.TerrainFillMode.InvertedClosed ? body.y    : body.yMax);
+                var yOff = fill == cl.TerrainFillMode.InvertedClosed ? -desc.yOffset : desc.yOffset;
+                var   v1 = dMesh.addVertex(pos1.x + n1.x * (d + yOff), pos1.y + n1.y * (d + yOff), desc.zOffset, body.x,    fill == cl.TerrainFillMode.InvertedClosed ? body.yMax : body.y);
+                var   v2 = dMesh.addVertex(pos1.x - n1.x * (d - yOff), pos1.y - n1.y * (d - yOff), desc.zOffset, body.x,    fill == cl.TerrainFillMode.InvertedClosed ? body.y    : body.yMax);
+                var   v3 = dMesh.addVertex(pos2.x + n2.x * (d + yOff), pos2.y + n2.y * (d + yOff), desc.zOffset, body.xMax, fill == cl.TerrainFillMode.InvertedClosed ? body.yMax : body.y);
+                var   v4 = dMesh.addVertex(pos2.x - n2.x * (d - yOff), pos2.y - n2.y * (d - yOff), desc.zOffset, body.xMax, fill == cl.TerrainFillMode.InvertedClosed ? body.y    : body.yMax);
                 dMesh.addFace(v1, v3, v4, v2);
             }
         }
@@ -219,7 +219,7 @@ var TerrainComponent = ck.Component.extend({
         var terrainMaterial = this._terrainMaterial;
 
         var index = 0;
-        var dir   = ck.p();
+        var dir   = cl.p();
         if (aDir < 0) {
             index = 0;
             dir   = aSegment[0].sub(aSegment[1]);
@@ -230,29 +230,29 @@ var TerrainComponent = ck.Component.extend({
         dir.normalize();
         var norm = this._path.getNormal(aSegment, index, false);
         var pos  = aSegment[index];
-        var    lCap = fill == ck.TerrainFillMode.InvertedClosed ? terrainMaterial.toUV(aDesc.rightCap) : terrainMaterial.toUV(aDesc.leftCap);
-        var    rCap = fill == ck.TerrainFillMode.InvertedClosed ? terrainMaterial.toUV(aDesc.leftCap ) : terrainMaterial.toUV(aDesc.rightCap);
-        var    yOff = fill == ck.TerrainFillMode.InvertedClosed ? -aDesc.yOffset : aDesc.yOffset;
+        var    lCap = fill == cl.TerrainFillMode.InvertedClosed ? terrainMaterial.toUV(aDesc.rightCap) : terrainMaterial.toUV(aDesc.leftCap);
+        var    rCap = fill == cl.TerrainFillMode.InvertedClosed ? terrainMaterial.toUV(aDesc.leftCap ) : terrainMaterial.toUV(aDesc.rightCap);
+        var    yOff = fill == cl.TerrainFillMode.InvertedClosed ? -aDesc.yOffset : aDesc.yOffset;
 
         if (aDir < 0) {
             var width =  lCap.width     * unitsPerUV.x;
             var scale = (lCap.height/2) * unitsPerUV.y;
 
-            var v1 = dMesh.addVertex(pos.add(dir.mult(width)).add(norm.mult(scale + yOff)), aDesc.zOffset, ck.p(fill == ck.TerrainFillMode.InvertedClosed? lCap.xMax : lCap.x, fill == ck.TerrainFillMode.InvertedClosed ? lCap.yMax : lCap.y));
-            var v2 = dMesh.addVertex(pos.add(norm.mult(scale + yOff)), aDesc.zOffset, ck.p(fill == ck.TerrainFillMode.InvertedClosed ? lCap.x : lCap.xMax, fill == ck.TerrainFillMode.InvertedClosed ? lCap.yMax : lCap.y));
+            var v1 = dMesh.addVertex(pos.add(dir.mult(width)).add(norm.mult(scale + yOff)), aDesc.zOffset, cl.p(fill == cl.TerrainFillMode.InvertedClosed? lCap.xMax : lCap.x, fill == cl.TerrainFillMode.InvertedClosed ? lCap.yMax : lCap.y));
+            var v2 = dMesh.addVertex(pos.add(norm.mult(scale + yOff)), aDesc.zOffset, cl.p(fill == cl.TerrainFillMode.InvertedClosed ? lCap.x : lCap.xMax, fill == cl.TerrainFillMode.InvertedClosed ? lCap.yMax : lCap.y));
 
-            var v3 = dMesh.addVertex(pos.sub(norm.mult(scale - yOff)), aDesc.zOffset, cc.p(fill == ck.TerrainFillMode.InvertedClosed ? lCap.x : lCap.xMax, fill == ck.TerrainFillMode.InvertedClosed ? lCap.y : lCap.yMax));
-            var v4 = dMesh.addVertex(pos.add(dir.mult(width)).sub(norm.mult(scale - yOff)), aDesc.zOffset, ck.p(fill == ck.TerrainFillMode.InvertedClosed ? lCap.xMax : lCap.x, fill == ck.TerrainFillMode.InvertedClosed ? lCap.y : lCap.yMax));
+            var v3 = dMesh.addVertex(pos.sub(norm.mult(scale - yOff)), aDesc.zOffset, cc.p(fill == cl.TerrainFillMode.InvertedClosed ? lCap.x : lCap.xMax, fill == cl.TerrainFillMode.InvertedClosed ? lCap.y : lCap.yMax));
+            var v4 = dMesh.addVertex(pos.add(dir.mult(width)).sub(norm.mult(scale - yOff)), aDesc.zOffset, cl.p(fill == cl.TerrainFillMode.InvertedClosed ? lCap.xMax : lCap.x, fill == cl.TerrainFillMode.InvertedClosed ? lCap.y : lCap.yMax));
             dMesh.addFace(v1, v2, v3, v4);
         } else {
             var width =  rCap.width     * unitsPerUV.x;
             var scale = (rCap.height/2) * unitsPerUV.y;
 
-            var v1 = dMesh.addVertex(pos.add(dir.mult(width)).add(norm.mult(scale + yOff)), aDesc.zOffset, ck.p(fill == ck.TerrainFillMode.InvertedClosed ? rCap.x : rCap.xMax, fill == ck.TerrainFillMode.InvertedClosed ? rCap.yMax : rCap.y));
-            var v2 = dMesh.addVertex(pos.add(norm.mult(scale + yOff)),               aDesc.zOffset, ck.p(fill == ck.TerrainFillMode.InvertedClosed ? rCap.xMax : rCap.x, fill == ck.TerrainFillMode.InvertedClosed ? rCap.yMax : rCap.y));
+            var v1 = dMesh.addVertex(pos.add(dir.mult(width)).add(norm.mult(scale + yOff)), aDesc.zOffset, cl.p(fill == cl.TerrainFillMode.InvertedClosed ? rCap.x : rCap.xMax, fill == cl.TerrainFillMode.InvertedClosed ? rCap.yMax : rCap.y));
+            var v2 = dMesh.addVertex(pos.add(norm.mult(scale + yOff)),               aDesc.zOffset, cl.p(fill == cl.TerrainFillMode.InvertedClosed ? rCap.xMax : rCap.x, fill == cl.TerrainFillMode.InvertedClosed ? rCap.yMax : rCap.y));
 
-            var v3 = dMesh.addVertex(pos.sub(norm.mult(scale - yOff)),               aDesc.zOffset, ck.p(fill == ck.TerrainFillMode.InvertedClosed ? rCap.xMax : rCap.x, fill == ck.TerrainFillMode.InvertedClosed ? rCap.y : rCap.yMax));
-            var v4 = dMesh.addVertex(pos.add(dir.mult(width)).sub(norm.mult(scale - yOff)), aDesc.zOffset, ck.p(fill == ck.TerrainFillMode.InvertedClosed ? rCap.x : rCap.xMax, fill == ck.TerrainFillMode.InvertedClosed ? rCap.y : rCap.yMax));
+            var v3 = dMesh.addVertex(pos.sub(norm.mult(scale - yOff)),               aDesc.zOffset, cl.p(fill == cl.TerrainFillMode.InvertedClosed ? rCap.xMax : rCap.x, fill == cl.TerrainFillMode.InvertedClosed ? rCap.y : rCap.yMax));
+            var v4 = dMesh.addVertex(pos.add(dir.mult(width)).sub(norm.mult(scale - yOff)), aDesc.zOffset, cl.p(fill == cl.TerrainFillMode.InvertedClosed ? rCap.x : rCap.xMax, fill == cl.TerrainFillMode.InvertedClosed ? rCap.y : rCap.yMax));
             dMesh.addFace(v4, v3, v2, v1);
         }
     },
@@ -261,7 +261,7 @@ var TerrainComponent = ck.Component.extend({
         var terrainMaterial = this._terrainMaterial;
 
         var fillVerts = this._path.getVerts(this.smoothPath, this.splistDist, this.splitCorners);
-        var scale     = ck.p();
+        var scale     = cl.p();
 
         // scale is different for the fill texture
         if (terrainMaterial.fillMaterial != null)
@@ -276,14 +276,14 @@ var TerrainComponent = ck.Component.extend({
             var start = fillVerts[0];
             var end   = fillVerts[fillVerts.length - 1];
 
-            fillVerts.push(ck.p(end.x, fillY));
-            fillVerts.push(ck.p(Math.lerp(end.x, start.x, 0.33), fillY));
-            fillVerts.push(ck.p(Math.lerp(end.x, start.x, 0.66), fillY));
-            fillVerts.push(ck.p(start.x, fillY));
+            fillVerts.push(cl.p(end.x, fillY));
+            fillVerts.push(cl.p(Math.lerp(end.x, start.x, 0.33), fillY));
+            fillVerts.push(cl.p(Math.lerp(end.x, start.x, 0.66), fillY));
+            fillVerts.push(cl.p(start.x, fillY));
         }
 
         var offset  = this._dMesh.vertCount;
-        var indices = ck.Triangulator.getIndices(fillVerts, true, this.fill == ck.TerrainFillMode.InvertedClosed);
+        var indices = cl.Triangulator.getIndices(fillVerts, true, this.fill == cl.TerrainFillMode.InvertedClosed);
         for (var i = 0; i < fillVerts.length; i++)
         {
             this._dMesh.addVertex(fillVerts[i].x, fillVerts[i].y, this.fillZ, fillVerts[i].x / scale.x, fillVerts[i].y / scale.y);
@@ -299,7 +299,7 @@ var TerrainComponent = ck.Component.extend({
 });
 
 
-ck.ComponentManager.register("TerrainComponent", TerrainComponent);
+cl.ComponentManager.register("TerrainComponent", TerrainComponent);
 
 var _p = TerrainComponent.prototype;
-ck.defineGetterSetter(_p, "terrainMaterial", "_getTerrainMaterial", "_setTerrainMaterial");
+cl.defineGetterSetter(_p, "terrainMaterial", "_getTerrainMaterial", "_setTerrainMaterial");

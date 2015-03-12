@@ -228,7 +228,7 @@ define(function (require, exports, module) {
         cc.loader.resPath = ProjectManager.getProjectRoot().fullPath;
 
         var file = editor.document.file;
-        // ck.SceneManager.loadScene(file.fullPath, function(s){
+        // cl.SceneManager.loadScene(file.fullPath, function(s){
 
             var s = new cc.Scene();
             scene = s;

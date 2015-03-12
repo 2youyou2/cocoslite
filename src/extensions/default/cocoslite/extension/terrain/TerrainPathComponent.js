@@ -1,4 +1,4 @@
-var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", {
+var TerrainPathComponent = cl.Component.extendComponent("TerrainPathComponent", {
     ctor: function () {
         this._super(this);
         
@@ -15,7 +15,7 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
         this._pathVerts.splice(0, this._pathVerts.length);
 
         for(var i in verts){
-            this._pathVerts.push(ck.p(verts[i]));
+            this._pathVerts.push(cl.p(verts[i]));
         }
     },
 
@@ -44,7 +44,7 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
     {
     	var result = [];
     	for(var i=0; i<this.pathVerts.length; i++){
-    		result.push(ck.p(this.pathVerts[i]));
+    		result.push(cl.p(this.pathVerts[i]));
     	}
         return result;
     },
@@ -95,7 +95,7 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
         {
             var next  = i == pathVerts.length -1 ? 0 : i + 1;
             var pt    = this.getClosetPointOnLine(pathVerts[i], pathVerts[next], aPoint, true);
-            var tDist = ck.Point.sqrMagnitude(aPoint.sub(pt));
+            var tDist = cl.Point.sqrMagnitude(aPoint.sub(pt));
             if (tDist < dist)
             {
                 dist = tDist;
@@ -104,12 +104,12 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
         }
         if (!closed)
         {
-            var tDist = ck.Point.sqrMagnitude(aPoint.sub(pathVerts[pathVerts.length - 1]));
+            var tDist = cl.Point.sqrMagnitude(aPoint.sub(pathVerts[pathVerts.length - 1]));
             if (tDist <= dist)
             {
                 seg = pathVerts.length - 1;
             }
-            tDist = ck.Point.sqrMagnitude(aPoint.sub(pathVerts[0]));
+            tDist = cl.Point.sqrMagnitude(aPoint.sub(pathVerts[0]));
             if (tDist <= dist)
             {
                 seg = pathVerts.length - 1;
@@ -125,12 +125,12 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
         var currSegment = [];
         for (var i = 0; i < aPath.length; i++)
         {
-            currSegment.push(ck.p(aPath[i]));
+            currSegment.push(cl.p(aPath[i]));
             if (this.isSplit(aPath, i))
             {
                 segments.push(currSegment);
                 currSegment = [];
-                currSegment.push(ck.p(aPath[i]));
+                currSegment.push(cl.p(aPath[i]));
             }
         }
         segments.push(currSegment);
@@ -166,7 +166,7 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
         var a3 = aClosed ? (i + 1) % (aSegment.length) : Math.clamp(i + 1, 0, aSegment.length - 1);
         var a4 = aClosed ? (i + 2) % (aSegment.length) : Math.clamp(i + 2, 0, aSegment.length - 1);
 
-        return ck.p(
+        return cl.p(
             this.hermite(aSegment[a1].x, aSegment[a2].x, aSegment[a3].x, aSegment[a4].x, aPercentage, aTension, aBias),
             this.hermite(aSegment[a1].y, aSegment[a2].y, aSegment[a3].y, aSegment[a4].y, aPercentage, aTension, aBias));
     },
@@ -197,16 +197,16 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
     getDirection: function(aOne, aTwo)
     {
         var dir = aOne.sub(aTwo);
-        dir = ck.p(-dir.y, dir.x);
+        dir = cl.p(-dir.y, dir.x);
         if (Math.abs(dir.x) > Math.abs(dir.y))
         {
-            if (dir.x < 0) return ck.TerrainDirection.Left;
-            else return ck.TerrainDirection.Right;
+            if (dir.x < 0) return cl.TerrainDirection.Left;
+            else return cl.TerrainDirection.Right;
         }
         else
         {
-            if (dir.y < 0) return ck.TerrainDirection.Bottom;
-            else return ck.TerrainDirection.Top;
+            if (dir.y < 0) return cl.TerrainDirection.Bottom;
+            else return cl.TerrainDirection.Top;
         }
     },
 
@@ -226,13 +226,13 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
         dir         = new cc.p(-dir.y, dir.x);
         if (Math.abs(dir.x) > Math.abs(dir.y))
         {
-            if (dir.x < 0) return aInvert ? ck.TerrainDirection.Right : ck.TerrainDirection.Left;
-            else           return aInvert ? ck.TerrainDirection.Left  : ck.TerrainDirection.Right;
+            if (dir.x < 0) return aInvert ? cl.TerrainDirection.Right : cl.TerrainDirection.Left;
+            else           return aInvert ? cl.TerrainDirection.Left  : cl.TerrainDirection.Right;
         }
         else
         {
-            if (dir.y < 0) return aInvert ? ck.TerrainDirection.Top    : ck.TerrainDirection.Bottom;
-            else           return aInvert ? ck.TerrainDirection.Bottom : ck.TerrainDirection.Top;
+            if (dir.y < 0) return aInvert ? cl.TerrainDirection.Top    : cl.TerrainDirection.Bottom;
+            else           return aInvert ? cl.TerrainDirection.Bottom : cl.TerrainDirection.Top;
         }
     },
 
@@ -281,7 +281,7 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
 		var curr = aClosed && i == aSegment.length - 1 ? aSegment[0] : aSegment[i];
 		
         // get the vertex before the current vertex
-		var prev = ck.p();
+		var prev = cl.p();
 		if (i-1 < 0) {
 			if (aClosed) {
 				prev = aSegment[aSegment.length-2];
@@ -293,7 +293,7 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
 		}
 		
         // get the vertex after the current vertex
-		var next = ck.p();
+		var next = cl.p();
 		if (i+1 > aSegment.length-1) {
 			if (aClosed) {
 				next = aSegment[1];
@@ -310,8 +310,8 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
 		prev.normalize();
 		next.normalize();
 		
-		prev = new ck.p(-prev.y, prev.x);
-		next = new ck.p(next.y, -next.x);
+		prev = new cl.p(-prev.y, prev.x);
+		next = new cl.p(next.y, -next.x);
 		
 		var norm = (prev.add(next)).divide(2);
 		norm.normalize();
@@ -341,6 +341,6 @@ var TerrainPathComponent = ck.Component.extendComponent("TerrainPathComponent", 
 
 var _p = TerrainPathComponent.prototype;
 
-ck.defineGetterSetter(_p, "count", "_getCount");
-ck.defineGetterSetter(_p, "pathVerts", "_getPathVerts", "_setPathVerts");
+cl.defineGetterSetter(_p, "count", "_getCount");
+cl.defineGetterSetter(_p, "pathVerts", "_getPathVerts", "_setPathVerts");
 

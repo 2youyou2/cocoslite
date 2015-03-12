@@ -45,7 +45,7 @@ define(function (require, exports, module) {
     	var children = obj.children;
 		for(var i=0; i<children.length; i++){
 			var c = children[i];
-			if(c.constructor != ck.GameObject && c.constructor != cc.Scene && c.constructor != cc.Layer)
+			if(c.constructor != cl.GameObject && c.constructor != cc.Scene && c.constructor != cc.Layer)
 				continue;
 			addObject(c);
 		}
@@ -171,7 +171,7 @@ define(function (require, exports, module) {
 
 				if(dsc.set || dsc.get){
 					obj._originProperties[p] = {get: dsc.get, set: dsc.set};
-					ck.defineGetterSetter(obj, p, dsc.get, function(){
+					cl.defineGetterSetter(obj, p, dsc.get, function(){
 						var oldValue = this[p];
 
 						var func = this._originProperties[p].set;
@@ -183,7 +183,7 @@ define(function (require, exports, module) {
 					});
 				}else{
 					obj._originProperties[p] = obj[p];
-					ck.defineGetterSetter(obj, p, function(){
+					cl.defineGetterSetter(obj, p, function(){
 						return this._originProperties[p];
 					}, function(val){
 						var oldValue = this[p];

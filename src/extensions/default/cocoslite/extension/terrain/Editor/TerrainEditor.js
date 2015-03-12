@@ -107,7 +107,7 @@ define(function (require, exports, module) {
         var firstDist  = cc.pDistance(currentMousePoint, path.pathVerts[closestID]);
         var secondDist = cc.pDistance(currentMousePoint, path.pathVerts[secondID]);
 
-        currentPoint = ck.p(currentMousePoint.x, currentMousePoint.y);
+        currentPoint = cl.p(currentMousePoint.x, currentMousePoint.y);
         var index = points.length;
 
         if (secondID == 0) {
@@ -124,7 +124,7 @@ define(function (require, exports, module) {
 
     function preAddPoint(){
         if(!path) return;
-        closestID = path.getClosestSeg(ck.p(currentMousePoint));
+        closestID = path.getClosestSeg(cl.p(currentMousePoint));
         secondID  = closestID + 1 >= points.length ? 0 : closestID + 1;
     }
 
@@ -149,7 +149,7 @@ define(function (require, exports, module) {
 
             var worldPoint = touch.getLocation();
             var p = obj.convertToNodeSpace(worldPoint);
-            currentPoint = ck.p(p);
+            currentPoint = cl.p(p);
             currentPoint.hover = true;
 
             points.set(currentIndex, currentPoint);

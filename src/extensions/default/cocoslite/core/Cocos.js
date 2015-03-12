@@ -5,7 +5,6 @@ define(function (require, exports, module) {
         EventManager    = require("core/EventManager"),
         ExtensionUtils  = brackets.getModule("utils/ExtensionUtils");
 
-    var ckJsList = [];    
     var selectedObjects;
 
     var $scene = $(Scene);
@@ -20,12 +19,11 @@ define(function (require, exports, module) {
 
 
     function initConfig(){
-        window.ck = {};
-        ck.engineDir = "/Users/youyou/Desktop/workspace/cocos/cocos2d-js/frameworks/cocos2d-html5";
-        ck.ckDir = ck.engineDir + "ck/"
+        window.cl = {};
+        cl.engineDir = "/Users/youyou/Desktop/workspace/cocos/cocos2d-js/frameworks/cocos2d-html5";
 
         document.ccConfig = {
-            "engineDir": ck.engineDir,
+            "engineDir": cl.engineDir,
             "project_type": "javascript",
             "debugMode" : 1,
             "showFPS" : true,
@@ -33,7 +31,7 @@ define(function (require, exports, module) {
             "id" : "gameCanvas",
             "renderMode" : 0,
             "modules":[
-                "cocoskit",
+                "cocoslite",
                 "shape-nodes",
                 "box2d"
             ]
@@ -45,26 +43,26 @@ define(function (require, exports, module) {
 
     function initCanvas(){
 
-        // ck.$editor = $('#editor-holder');
-        // ck.$editor.append($scene);
+        // cl.$editor = $('#editor-holder');
+        // cl.$editor.append($scene);
 
-        ck.$canvas = $scene.find('#gameCanvas');
+        cl.$canvas = $scene.find('#gameCanvas');
 
-        ck.$fgCanvas = $scene.find("#fgCanvas");
-        cc._fgCanvas = ck.$fgCanvas[0];
-        // ck.$fgCanvas[0].style.display = 'none';
+        cl.$fgCanvas = $scene.find("#fgCanvas");
+        cc._fgCanvas = cl.$fgCanvas[0];
+        // cl.$fgCanvas[0].style.display = 'none';
 
-        ck.$fgCanvas._renderList = [];
-        ck.$fgCanvas.addRender = function(func){
+        cl.$fgCanvas._renderList = [];
+        cl.$fgCanvas.addRender = function(func){
             this._renderList.push(func);
         }
 
 
-        ck.$fgCanvas.ctx = ck.$fgCanvas[0].getContext('2d');
+        cl.$fgCanvas.ctx = cl.$fgCanvas[0].getContext('2d');
         var render = function(){
             if(!cc._canvas) return;
 
-            var fg = ck.$fgCanvas;
+            var fg = cl.$fgCanvas;
             var maxW = cc._canvas.width ;
             var maxH = cc._canvas.height;
      
@@ -86,8 +84,8 @@ define(function (require, exports, module) {
 
     var initCocos = function(){
         var updateSize = function(){ 
-            ck.$fgCanvas[0].setAttribute("width",  cc._canvas.width);
-            ck.$fgCanvas[0].setAttribute("height", cc._canvas.height);
+            cl.$fgCanvas[0].setAttribute("width",  cc._canvas.width);
+            cl.$fgCanvas[0].setAttribute("height", cc._canvas.height);
         }
 
         cc.game.onStart = function(){

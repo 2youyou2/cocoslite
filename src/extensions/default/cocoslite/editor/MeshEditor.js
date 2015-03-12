@@ -43,6 +43,6 @@ define(function (require, exports, module) {
     }
 
 	EventManager.on("projectOpen", function(){
-		ck.$fgCanvas.addRender(renderScene);
+		cl.$fgCanvas.addRender(renderScene);
 	})
 });

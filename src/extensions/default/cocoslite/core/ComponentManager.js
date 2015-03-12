@@ -24,13 +24,13 @@ define(function (require, exports, module) {
     	var objs = [];
     	if(_currentObjects && _currentObjects.length>0){
     		for(var i in _currentObjects){
-    			var obj = new ck.GameObject();
+    			var obj = new cl.GameObject();
     			_currentObjects[i].addChild(obj);
     			objs.push(obj);
     		}
     	} else {
     		var scene = cc.director.getRunningScene()
-	    	var obj = new ck.GameObject();
+	    	var obj = new cl.GameObject();
 	    	scene.addChild(obj);
 	    	objs.push(obj);
     	}
@@ -41,13 +41,13 @@ define(function (require, exports, module) {
     }
 
     function registerCommand(){
-    	CommandManager.register("Create Empty", "ck.GameObject.CreateEmpty", createEmptyObject);
+    	CommandManager.register("Create Empty", "cl.GameObject.CreateEmpty", createEmptyObject);
 
-    	var cs = ck.ComponentManager.getAllClasses();
+    	var cs = cl.ComponentManager.getAllClasses();
     	for(var k in cs){
     		// _$content.append($("<div>"+  k + " : " + cs[k].editorDir +"</div>"))
 
-    		var id = "ck.Component."+k;
+    		var id = "cl.Component."+k;
     		cmds.push(id);
 
     		(function(k){
@@ -64,10 +64,10 @@ define(function (require, exports, module) {
 
     function registerMenus()
     {
-    	objectMenu = Menus.addMenu("GameObject", "ck.GameObject");
-    	objectMenu.addMenuItem("ck.GameObject.CreateEmpty");
+    	objectMenu = Menus.addMenu("GameObject", "cl.GameObject");
+    	objectMenu.addMenuItem("cl.GameObject.CreateEmpty");
 
-		componentMenu = Menus.addMenu("Component", "ck.Component");
+		componentMenu = Menus.addMenu("Component", "cl.Component");
 
 		for(var i in cmds){
 			componentMenu.addMenuItem(cmds[i]);

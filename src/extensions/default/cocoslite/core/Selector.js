@@ -53,7 +53,7 @@ define(function (require, exports, module) {
 	        	var worldPoint = touch.getLocation();
 
 	        	var hitTest = function(object){
-	        		if(object.constructor == ck.GameObject){
+	        		if(object.constructor == cl.GameObject){
 	        			if(object.hitTest(worldPoint))
 	        				return object;
 	        		}

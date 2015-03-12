@@ -1,14 +1,14 @@
-ck.Triangulator = {};
+cl.Triangulator = {};
 
-ck.Triangulator.getIndices = function (aPoints, aTreatAsPath, aInvert) {
+cl.Triangulator.getIndices = function (aPoints, aTreatAsPath, aInvert) {
 	var tris   = [];
-	var bounds = ck.Triangulator.getBounds(aPoints);
+	var bounds = cl.Triangulator.getBounds(aPoints);
 
 	// it's easiest if we add in some all-encompassing tris, and then remove them later
-	aPoints.push(ck.p(bounds.x - (bounds.z - bounds.x)*1, bounds.w - (bounds.y - bounds.w)*1)); // 4
-    aPoints.push(ck.p(bounds.z + (bounds.z - bounds.x)*1, bounds.w - (bounds.y - bounds.w)*1)); // 3
-    aPoints.push(ck.p(bounds.z + (bounds.z - bounds.x)*1, bounds.y + (bounds.y - bounds.w)*1)); // 2
-    aPoints.push(ck.p(bounds.x - (bounds.z - bounds.x)*1, bounds.y + (bounds.y - bounds.w)*1)); // 1
+	aPoints.push(cl.p(bounds.x - (bounds.z - bounds.x)*1, bounds.w - (bounds.y - bounds.w)*1)); // 4
+    aPoints.push(cl.p(bounds.z + (bounds.z - bounds.x)*1, bounds.w - (bounds.y - bounds.w)*1)); // 3
+    aPoints.push(cl.p(bounds.z + (bounds.z - bounds.x)*1, bounds.y + (bounds.y - bounds.w)*1)); // 2
+    aPoints.push(cl.p(bounds.x - (bounds.z - bounds.x)*1, bounds.y + (bounds.y - bounds.w)*1)); // 1
     tris.push(aPoints.length - 1);
     tris.push(aPoints.length - 2);
     tris.push(aPoints.length - 3);
@@ -19,7 +19,7 @@ ck.Triangulator.getIndices = function (aPoints, aTreatAsPath, aInvert) {
 	// add in all the vers of the path
     for (var i = 0; i < aPoints.length - 4; i += 1)
     {
-        var tri = ck.Triangulator.getSurroundingTri(aPoints, tris, aPoints[i]);
+        var tri = cl.Triangulator.getSurroundingTri(aPoints, tris, aPoints[i]);
 
         if (tri != -1)
         {
@@ -39,15 +39,15 @@ ck.Triangulator.getIndices = function (aPoints, aTreatAsPath, aInvert) {
             tris.push(t1);
             tris.push(i);
 			
-			ck.Triangulator.edgeFlip(aPoints, tris, tri);
-			ck.Triangulator.edgeFlip(aPoints, tris, tris.length-3);
-			ck.Triangulator.edgeFlip(aPoints, tris, tris.length-6);
+			cl.Triangulator.edgeFlip(aPoints, tris, tri);
+			cl.Triangulator.edgeFlip(aPoints, tris, tris.length-3);
+			cl.Triangulator.edgeFlip(aPoints, tris, tris.length-6);
         }
 	}
 	
 	// hacky solution to the stack overflow on the recursive edge flipping I was getting
 	for (var i = 0; i < tris.length*2; i+=3) {
-		ck.Triangulator.edgeFlip(aPoints,tris, i%tris.length);
+		cl.Triangulator.edgeFlip(aPoints,tris, i%tris.length);
 	}
 	
 	// remove the encompassing triangles
@@ -61,8 +61,8 @@ ck.Triangulator.getIndices = function (aPoints, aTreatAsPath, aInvert) {
 			tris[i+2] < aPoints.length)) {
 
 			var center = aPoints[tris[i]].add( aPoints[tris[i+1]] ).add( aPoints[tris[i+2]] ).divide(3);
-			if (!aTreatAsPath || (ck.Triangulator.getSegmentsUnder(aPoints, center.x, center.y, aInvert).length/2) % 2 == invertMesh) {
-				if (ck.Triangulator.isClockwise(aPoints[tris[i]], aPoints[tris[i+1]], aPoints[tris[i+2]])) {
+			if (!aTreatAsPath || (cl.Triangulator.getSegmentsUnder(aPoints, center.x, center.y, aInvert).length/2) % 2 == invertMesh) {
+				if (cl.Triangulator.isClockwise(aPoints[tris[i]], aPoints[tris[i+1]], aPoints[tris[i+2]])) {
 					result.push(tris[i+2]);
 					result.push(tris[i+1]);
 					result.push(tris[i  ]);
@@ -78,7 +78,7 @@ ck.Triangulator.getIndices = function (aPoints, aTreatAsPath, aInvert) {
 	return result;
 }
 
-ck.Triangulator.getSegmentsUnder = function (aPath, aX, aY, aIgnoreLast) {
+cl.Triangulator.getSegmentsUnder = function (aPath, aX, aY, aIgnoreLast) {
 	var result = [];
     var off = aIgnoreLast ? 4 : 0;
 	for (var i=0;i<aPath.length-off;i+=1) {
@@ -102,7 +102,7 @@ ck.Triangulator.getSegmentsUnder = function (aPath, aX, aY, aIgnoreLast) {
 /// </summary>
 /// <param name="aPoints">List of points.</param>
 /// <returns>x = left, y = top, z = right, w = bottom</returns>
-ck.Triangulator.getBounds = function (aPoints) {
+cl.Triangulator.getBounds = function (aPoints) {
 	if (aPoints.length <=0) return {x:0, y:0, z:1, w:1};
     var left   = aPoints[0].x;
     var right  = aPoints[0].x;
@@ -125,7 +125,7 @@ ck.Triangulator.getBounds = function (aPoints) {
 /// <param name="aTri3">Triangle point 9001</param>
 /// <param name="aPt">The point to test!</param>
 /// <returns>IS IT INSIDE YET?</returns>
-ck.Triangulator.ptInTri = function (aTri1,  aTri2, aTri3, aPt) {
+cl.Triangulator.ptInTri = function (aTri1,  aTri2, aTri3, aPt) {
     var as_x = aPt.x - aTri1.x;
     var as_y = aPt.y - aTri1.y;
     var  s_ab = (aTri2.x - aTri1.x) * as_y - (aTri2.y - aTri1.y) * as_x > 0;
@@ -143,7 +143,7 @@ ck.Triangulator.ptInTri = function (aTri1,  aTri2, aTri3, aPt) {
 /// <param name="aStart2">Line 2 start</param>
 /// <param name="aEnd2">Line 2 end</param>
 /// <returns>WHERE THEY INTERSECT</returns>
-ck.Triangulator.lineIntersectionPoint = function (aStart1, aEnd1, aStart2, aEnd2)
+cl.Triangulator.lineIntersectionPoint = function (aStart1, aEnd1, aStart2, aEnd2)
 {
 	var A1 = aEnd1  .y - aStart1.y;
 	var B1 = aStart1.x - aEnd1  .x;
@@ -155,12 +155,12 @@ ck.Triangulator.lineIntersectionPoint = function (aStart1, aEnd1, aStart2, aEnd2
 	
 	var delta = A1*B2 - A2*B1;
 	
-	return ck.p( (B2*C1 - B1*C2)/delta, (A1*C2 - A2*C1)/delta);
+	return cl.p( (B2*C1 - B1*C2)/delta, (A1*C2 - A2*C1)/delta);
 }
 /// <summary>
 /// Determines if these points are in clockwise order.
 /// </summary>
-ck.Triangulator.isClockwise = function (aPt1, aPt2, aPt3) {
+cl.Triangulator.isClockwise = function (aPt1, aPt2, aPt3) {
 	return (aPt2.x - aPt1.x)*(aPt3.y - aPt1.y) - (aPt3.x - aPt1.x)*(aPt2.y - aPt1.y) > 0;
 }
 
@@ -168,18 +168,18 @@ ck.Triangulator.isClockwise = function (aPt1, aPt2, aPt3) {
 
 // private function
 
-ck.Triangulator.getCircumcenter = function (aPoints, aTris, aTri) {
+cl.Triangulator.getCircumcenter = function (aPoints, aTris, aTri) {
 	// find midpoints on two sides
 	var midA = aPoints[aTris[aTri  ]].add(aPoints[aTris[aTri+1]]).divide(2);
 	var midB = aPoints[aTris[aTri+1]].add(aPoints[aTris[aTri+2]]).divide(2);
 	// get a perpendicular line for each midpoint
-	var dirA = aPoints[aTris[aTri  ]].sub(aPoints[aTris[aTri+1]]); dirA = ck.p(dirA.y, -dirA.x);
-	var dirB = aPoints[aTris[aTri+1]].sub(aPoints[aTris[aTri+2]]); dirB = ck.p(dirB.y, -dirB.x);
+	var dirA = aPoints[aTris[aTri  ]].sub(aPoints[aTris[aTri+1]]); dirA = cl.p(dirA.y, -dirA.x);
+	var dirB = aPoints[aTris[aTri+1]].sub(aPoints[aTris[aTri+2]]); dirB = cl.p(dirB.y, -dirB.x);
 	// the intersection should give us the circumcenter
-	return ck.Triangulator.lineIntersectionPoint(midA, midA.add(dirA), midB, midB.add(dirB));
+	return cl.Triangulator.lineIntersectionPoint(midA, midA.add(dirA), midB, midB.add(dirB));
 }
 
-ck.Triangulator.edgeFlip = function (aPoints, aTris, aTri) {
+cl.Triangulator.edgeFlip = function (aPoints, aTris, aTri) {
 	var xyz      = [];
 	var abc      = [];
 	var shared   = [];
@@ -188,8 +188,8 @@ ck.Triangulator.edgeFlip = function (aPoints, aTris, aTri) {
 	xyz.push ( aTris[aTri]   );
 	xyz.push ( aTris[aTri+1] );
 	xyz.push ( aTris[aTri+2] );
-	var center = ck.Triangulator.getCircumcenter(aPoints, aTris, aTri);
-	var distSq = ck.Point.sqrMagnitude(aPoints[xyz[0]].sub(center));
+	var center = cl.Triangulator.getCircumcenter(aPoints, aTris, aTri);
+	var distSq = cl.Point.sqrMagnitude(aPoints[xyz[0]].sub(center));
 	
 	for (var i = 0; i < aTris.length; i+=3) {
 		if (i == aTri) continue;
@@ -225,7 +225,7 @@ ck.Triangulator.edgeFlip = function (aPoints, aTris, aTri) {
 		}
 		
 		if (opposing.length == 2 && shared.length == 2) {
-			var sqr = ck.Point.sqrMagnitude(aPoints[opposing[1]].sub(center));
+			var sqr = cl.Point.sqrMagnitude(aPoints[opposing[1]].sub(center));
 			// cc.log("sqr : %f   %f", sqr, distSq);
 			if(sqr < distSq) {
 				
@@ -246,9 +246,9 @@ ck.Triangulator.edgeFlip = function (aPoints, aTris, aTri) {
 	return false;
 }
 
-ck.Triangulator.getSurroundingTri = function (aPoints, aTris, aPt) {
+cl.Triangulator.getSurroundingTri = function (aPoints, aTris, aPt) {
 	for (var i=0; i<aTris.length; i+=3) {
-		if (ck.Triangulator.ptInTri(aPoints[aTris[i]],
+		if (cl.Triangulator.ptInTri(aPoints[aTris[i]],
 					aPoints[aTris[i+1]],
 					aPoints[aTris[i+2]],
 					aPt )) {

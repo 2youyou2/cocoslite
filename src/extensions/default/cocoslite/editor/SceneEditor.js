@@ -39,7 +39,7 @@ define(function (require, exports, module) {
     };
 
     function test(scene){
-        // var o = new ck.GameObject();
+        // var o = new cl.GameObject();
         // o.setPosition(200,200)
         // o.setScale(40)
         // scene.addChild(o);
@@ -51,9 +51,9 @@ define(function (require, exports, module) {
         // // c.splitCorners = false;
 
         // var path = o.getComponent("TerrainPathComponent");
-        // path.pathVerts = [ck.p(9,2.1), ck.p(5,0), ck.p(0,0), ck.p(0,5), ck.p(7,7)];
-        // // path.pathVerts = [ck.p(0,0), ck.p(5,0)];
-        // // path.pathVerts = [ck.p(200,200), ck.p(200,0), ck.p(0,0), ck.p(0,200)];
+        // path.pathVerts = [cl.p(9,2.1), cl.p(5,0), cl.p(0,0), cl.p(0,5), cl.p(7,7)];
+        // // path.pathVerts = [cl.p(0,0), cl.p(5,0)];
+        // // path.pathVerts = [cl.p(200,200), cl.p(200,0), cl.p(0,0), cl.p(0,200)];
         // path.closed = true;
         
 
@@ -87,7 +87,7 @@ define(function (require, exports, module) {
         cc.loader.resPath = ProjectManager.getProjectRoot().fullPath;
 
         var file = editor.document.file;
-        ck.SceneManager.loadScene(file.fullPath, function(s){
+        cl.SceneManager.loadScene(file.fullPath, function(s){
 
             scene = s;
 
@@ -109,7 +109,7 @@ define(function (require, exports, module) {
 
             for(var k in this.children){
                 var child = this.children[k];
-                if(child.constructor == ck.GameObject){
+                if(child.constructor == cl.GameObject){
                     var cj = child.toJSON();
                     children.push(cj);
                 }
@@ -119,7 +119,7 @@ define(function (require, exports, module) {
         }
 
 
-        ck.GameObject.prototype.toJSON = function(){
+        cl.GameObject.prototype.toJSON = function(){
             var json = {};
 
             var components = json.components = [];
@@ -132,7 +132,7 @@ define(function (require, exports, module) {
 
             for(var k in this.children){
                 var child = this.children[k];
-                if(child.constructor == ck.GameObject){
+                if(child.constructor == cl.GameObject){
                     
                     if(json.children == null)
                         json.children = [];
@@ -146,7 +146,7 @@ define(function (require, exports, module) {
         }
 
 
-        ck.Component.prototype.toJSON = function(){
+        cl.Component.prototype.toJSON = function(){
             var json = {};
             json.class = this.classname;
 
