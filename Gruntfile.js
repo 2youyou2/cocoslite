@@ -85,6 +85,9 @@ module.exports = function (grunt) {
                             '!extensions/default/*/unittest-files/**/*',
                             '!extensions/default/*/unittests.js',
                             'extensions/default/*/**/*',
+                            '!extensions/default/CocosLite/cocos2d-js/frameworks/js-bindings/cocos2d-x/tests/**',
+                            '!extensions/default/CocosLite/cocos2d-js/frameworks/js-bindings/cocos2d-x/tools/**',
+                            '!extensions/default/CocosLite/cocos2d-js/frameworks/js-bindings/cocos2d-x/v3-deps-*.zip',
                             'extensions/dev/*',
                             'extensions/samples/**/*',
                             'thirdparty/CodeMirror2/addon/{,*/}*',
@@ -195,6 +198,7 @@ module.exports = function (grunt) {
                 '!src/extensions/**/thirdparty/**/*.js',
                 '!src/extensions/dev/**',
                 '!src/extensions/disabled/**',
+                '!src/extensions/default/CocosLite/cocos2d-js/**',
                 '!**/node_modules/**/*.js',
                 '!src/**/*-min.js',
                 '!src/**/*.min.js'
