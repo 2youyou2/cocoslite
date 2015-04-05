@@ -27,4 +27,4 @@
 	url = https://github.com/peterflynn/JSLint.git
 [submodule "src/extensions/default/CocosLite"]
 	path = src/extensions/default/CocosLite
-url=https://github.com/2youyouo2/cocoslite.git
+url=https://github.com/2youyouo2/cocoslite-plugin.git
