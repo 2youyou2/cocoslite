@@ -54,7 +54,7 @@ define(function (require, exports, module) {
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW);
         menu.addMenuItem(Commands.TOGGLE_LIVE_PREVIEW_MB_MODE);
-        menu.addMenuItem(Commands.FILE_PROJECT_SETTINGS);
+        // menu.addMenuItem(Commands.FILE_PROJECT_SETTINGS);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_EXTENSION_MANAGER);
         
@@ -79,88 +79,103 @@ define(function (require, exports, module) {
             menu.addMenuDivider();
         }
         menu.addMenuItem(Commands.EDIT_SELECT_ALL);
-        menu.addMenuItem(Commands.EDIT_SELECT_LINE);
-        menu.addMenuItem(Commands.EDIT_SPLIT_SEL_INTO_LINES);
-        menu.addMenuItem(Commands.EDIT_ADD_CUR_TO_PREV_LINE);
-        menu.addMenuItem(Commands.EDIT_ADD_CUR_TO_NEXT_LINE);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.EDIT_INDENT);
-        menu.addMenuItem(Commands.EDIT_UNINDENT);
-        menu.addMenuItem(Commands.EDIT_DUPLICATE);
-        menu.addMenuItem(Commands.EDIT_DELETE_LINES);
-        menu.addMenuItem(Commands.EDIT_LINE_UP);
-        menu.addMenuItem(Commands.EDIT_LINE_DOWN);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.EDIT_LINE_COMMENT);
-        menu.addMenuItem(Commands.EDIT_BLOCK_COMMENT);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.SHOW_CODE_HINTS);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.TOGGLE_CLOSE_BRACKETS);
+        
+        if(brackets.editorType === "IDE") {
+            menu.addMenuItem(Commands.EDIT_SELECT_LINE);
+            menu.addMenuItem(Commands.EDIT_SPLIT_SEL_INTO_LINES);
+            menu.addMenuItem(Commands.EDIT_ADD_CUR_TO_PREV_LINE);
+            menu.addMenuItem(Commands.EDIT_ADD_CUR_TO_NEXT_LINE);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.EDIT_INDENT);
+            menu.addMenuItem(Commands.EDIT_UNINDENT);
+            menu.addMenuItem(Commands.EDIT_DUPLICATE);
+            menu.addMenuItem(Commands.EDIT_DELETE_LINES);
+            menu.addMenuItem(Commands.EDIT_LINE_UP);
+            menu.addMenuItem(Commands.EDIT_LINE_DOWN);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.EDIT_LINE_COMMENT);
+            menu.addMenuItem(Commands.EDIT_BLOCK_COMMENT);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.SHOW_CODE_HINTS);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.TOGGLE_CLOSE_BRACKETS);
+        }
         
         /*
          * Find menu
          */
-        menu = Menus.addMenu(Strings.FIND_MENU, Menus.AppMenuBar.FIND_MENU);
-        menu.addMenuItem(Commands.CMD_FIND);
-        menu.addMenuItem(Commands.CMD_FIND_NEXT);
-        menu.addMenuItem(Commands.CMD_FIND_PREVIOUS);
-        menu.addMenuItem(Commands.CMD_FIND_ALL_AND_SELECT);
-        menu.addMenuItem(Commands.CMD_ADD_NEXT_MATCH);
-        menu.addMenuItem(Commands.CMD_SKIP_CURRENT_MATCH);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.CMD_FIND_IN_FILES);
-        menu.addMenuItem(Commands.CMD_FIND_IN_SELECTED);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.CMD_REPLACE);
-        menu.addMenuItem(Commands.CMD_REPLACE_IN_FILES);
-        menu.addMenuItem(Commands.CMD_REPLACE_IN_SELECTED);
+        if(brackets.editorType === "IDE") {
+
+            menu = Menus.addMenu(Strings.FIND_MENU, Menus.AppMenuBar.FIND_MENU);
+            menu.addMenuItem(Commands.CMD_FIND);
+            menu.addMenuItem(Commands.CMD_FIND_NEXT);
+            menu.addMenuItem(Commands.CMD_FIND_PREVIOUS);
+            menu.addMenuItem(Commands.CMD_FIND_ALL_AND_SELECT);
+            menu.addMenuItem(Commands.CMD_ADD_NEXT_MATCH);
+            menu.addMenuItem(Commands.CMD_SKIP_CURRENT_MATCH);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.CMD_FIND_IN_FILES);
+            menu.addMenuItem(Commands.CMD_FIND_IN_SELECTED);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.CMD_REPLACE);
+            menu.addMenuItem(Commands.CMD_REPLACE_IN_FILES);
+            menu.addMenuItem(Commands.CMD_REPLACE_IN_SELECTED);
+
+        }
         
         /*
          * View menu
          */
         menu = Menus.addMenu(Strings.VIEW_MENU, Menus.AppMenuBar.VIEW_MENU);
-        menu.addMenuItem(Commands.CMD_THEMES_OPEN_SETTINGS);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.CMD_SPLITVIEW_NONE);
-        menu.addMenuItem(Commands.CMD_SPLITVIEW_VERTICAL);
-        menu.addMenuItem(Commands.CMD_SPLITVIEW_HORIZONTAL);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.VIEW_HIDE_SIDEBAR);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.VIEW_INCREASE_FONT_SIZE);
-        menu.addMenuItem(Commands.VIEW_DECREASE_FONT_SIZE);
-        menu.addMenuItem(Commands.VIEW_RESTORE_FONT_SIZE);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.TOGGLE_ACTIVE_LINE);
-        menu.addMenuItem(Commands.TOGGLE_LINE_NUMBERS);
-        menu.addMenuItem(Commands.TOGGLE_WORD_WRAP);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.FILE_LIVE_HIGHLIGHT);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.VIEW_TOGGLE_INSPECTION);
+        if(brackets.editorType === "IDE") {
+
+            menu.addMenuItem(Commands.CMD_THEMES_OPEN_SETTINGS);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.CMD_SPLITVIEW_NONE);
+            menu.addMenuItem(Commands.CMD_SPLITVIEW_VERTICAL);
+            menu.addMenuItem(Commands.CMD_SPLITVIEW_HORIZONTAL);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.VIEW_HIDE_SIDEBAR);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.VIEW_INCREASE_FONT_SIZE);
+            menu.addMenuItem(Commands.VIEW_DECREASE_FONT_SIZE);
+            menu.addMenuItem(Commands.VIEW_RESTORE_FONT_SIZE);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.TOGGLE_ACTIVE_LINE);
+            menu.addMenuItem(Commands.TOGGLE_LINE_NUMBERS);
+            menu.addMenuItem(Commands.TOGGLE_WORD_WRAP);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.FILE_LIVE_HIGHLIGHT);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.VIEW_TOGGLE_INSPECTION);
+
+        }
         
         /*
          * Navigate menu
          */
-        menu = Menus.addMenu(Strings.NAVIGATE_MENU, Menus.AppMenuBar.NAVIGATE_MENU);
-        menu.addMenuItem(Commands.NAVIGATE_QUICK_OPEN);
-        menu.addMenuItem(Commands.NAVIGATE_GOTO_LINE);
-        menu.addMenuItem(Commands.NAVIGATE_GOTO_DEFINITION);
-        menu.addMenuItem(Commands.NAVIGATE_JUMPTO_DEFINITION);
-        menu.addMenuItem(Commands.NAVIGATE_GOTO_FIRST_PROBLEM);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.NAVIGATE_NEXT_DOC);
-        menu.addMenuItem(Commands.NAVIGATE_PREV_DOC);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.TOGGLE_QUICK_EDIT);
-        menu.addMenuItem(Commands.QUICK_EDIT_PREV_MATCH);
-        menu.addMenuItem(Commands.QUICK_EDIT_NEXT_MATCH);
-        menu.addMenuItem(Commands.CSS_QUICK_EDIT_NEW_RULE);
-        menu.addMenuDivider();
-        menu.addMenuItem(Commands.TOGGLE_QUICK_DOCS);
+        if(brackets.editorType === "IDE") {
+
+            menu = Menus.addMenu(Strings.NAVIGATE_MENU, Menus.AppMenuBar.NAVIGATE_MENU);
+            menu.addMenuItem(Commands.NAVIGATE_QUICK_OPEN);
+            menu.addMenuItem(Commands.NAVIGATE_GOTO_LINE);
+            menu.addMenuItem(Commands.NAVIGATE_GOTO_DEFINITION);
+            menu.addMenuItem(Commands.NAVIGATE_JUMPTO_DEFINITION);
+            menu.addMenuItem(Commands.NAVIGATE_GOTO_FIRST_PROBLEM);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.NAVIGATE_NEXT_DOC);
+            menu.addMenuItem(Commands.NAVIGATE_PREV_DOC);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.TOGGLE_QUICK_EDIT);
+            menu.addMenuItem(Commands.QUICK_EDIT_PREV_MATCH);
+            menu.addMenuItem(Commands.QUICK_EDIT_NEXT_MATCH);
+            menu.addMenuItem(Commands.CSS_QUICK_EDIT_NEW_RULE);
+            menu.addMenuDivider();
+            menu.addMenuItem(Commands.TOGGLE_QUICK_DOCS);
+
+        }
         
         /*
          * Help menu

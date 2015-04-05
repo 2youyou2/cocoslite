@@ -265,7 +265,14 @@ define(function (require, exports, module) {
      * If paneId is undefined, the ACTIVE_PANE constant
      */
     function _doOpen(fullPath, silent, paneId, options) {
+
         var result = new $.Deferred();
+
+        // cocoslite
+        if(fullPath.endWith(".js") && brackets.editorType === "GameEditor") {
+            CommandManager.execute(Commands.CMD_OPEN_SCRIPT, fullPath);
+            return result.promise();
+        }
 
         // workaround for https://github.com/adobe/brackets/issues/6001
         // TODO should be removed once bug is closed.
@@ -425,6 +432,7 @@ define(function (require, exports, module) {
      * @return {$.Promise} a jQuery promise that will be resolved with a file object
      */
     function handleFileOpen(commandData) {
+
         var fileInfo = _parseDecoratedPath(commandData ? commandData.fullPath : null),
             silent = (commandData && commandData.silent) || false,
             paneId = (commandData && commandData.paneId) || MainViewManager.ACTIVE_PANE,
