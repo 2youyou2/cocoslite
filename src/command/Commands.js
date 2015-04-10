@@ -117,6 +117,10 @@ define(function (require, exports, module) {
 
     exports.CMD_OPEN                        = "cmd.open";
     exports.CMD_ADD_TO_WORKINGSET_AND_OPEN  = "cmd.addToWorkingSetAndOpen";          // DocumentCommandHandlers.js   handleOpenDocumentInNewPane()
+
+    exports.CMD_OPEN_SCRIPT             = "cl.openScript";              // CocosLite
+    exports.CMD_OPEN_IDE                = "cl.OpenIDE";
+    exports.CMD_CREATE_COCOS_PROJECT    = "cl.CreateProject";
     
     // NAVIGATE
     exports.NAVIGATE_NEXT_DOC           = "navigate.nextDoc";           // DocumentCommandHandlers.js   handleGoNextDoc()

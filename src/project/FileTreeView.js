@@ -405,7 +405,11 @@ define(function (require, exports, module) {
                     });
                 }
             } else {
-                this.props.actions.setSelected(this.myPath());
+                if(brackets.editorType === "IDE") {
+                    this.props.actions.setSelected(this.myPath());
+                } else {
+                    this.props.actions.setSelected(this.myPath(), true);
+                }
             }
             return false;
         },

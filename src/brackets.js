@@ -150,6 +150,22 @@ define(function (require, exports, module) {
     
     // read URL params
     params.parse();
+
+    var type = params.get("editorType");
+    brackets.editorType = type ? type : "GameEditor";
+    brackets.config.app_title += (brackets.platform === "mac" ? " \u2014 " : " - ") + brackets.editorType;
+
+    if(appshell.app.focus) {
+        window.focus = appshell.app.focus;
+    }
+    window.focus();
+
+    // String
+    String.prototype.endWith = function(endStr) {
+        var d=this.length-endStr.length;
+        return (d>=0 && this.lastIndexOf(endStr)==d);
+    };
+
     
 
     /**
@@ -427,14 +443,15 @@ define(function (require, exports, module) {
         }, true);
         
         // Prevent extensions from using window.open() to insecurely load untrusted web content
-        var real_windowOpen = window.open;
-        window.open = function (url) {
-            // Allow file:// URLs, relative URLs (implicitly file: also), and about:blank
-            if (!url.match(/^file:\/\//) && !url.match(/^about:blank/) && url.indexOf(":") !== -1) {
-                throw new Error("Brackets-shell is not a secure general purpose web browser. Use NativeApp.openURLInDefaultBrowser() to open URLs in the user's main browser");
-            }
-            return real_windowOpen.apply(window, arguments);
-        };
+
+        // var real_windowOpen = window.open;
+        // window.open = function (url) {
+        //     // Allow file:// URLs, relative URLs (implicitly file: also), and about:blank
+        //     if (!url.match(/^file:\/\//) && !url.match(/^about:blank/) && url.indexOf(":") !== -1) {
+        //         throw new Error("Brackets-shell is not a secure general purpose web browser. Use NativeApp.openURLInDefaultBrowser() to open URLs in the user's main browser");
+        //     }
+        //     return real_windowOpen.apply(window, arguments);
+        // };
         
         // jQuery patch to shim deprecated usage of $() on EventDispatchers
         var DefaultCtor = jQuery.fn.init;
