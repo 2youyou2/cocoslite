@@ -1,0 +1,13 @@
+{
+    "title": "CocosLiteTheme",
+    "name": "CocosLite Theme",
+    "description": "Theme for cocoslite",
+    "version": "0.1.0",
+    "author": "Kaile Yin <jyinkailej@gmail.com>",
+    "engines": {
+        "brackets": ">=1.1.0"
+    },
+    "theme": {
+        "file": "main.css"
+    }
+}

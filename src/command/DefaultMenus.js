@@ -80,7 +80,7 @@ define(function (require, exports, module) {
         }
         menu.addMenuItem(Commands.EDIT_SELECT_ALL);
         
-        if(brackets.editorType === "IDE") {
+        // if(brackets.editorType === "IDE") {
             menu.addMenuItem(Commands.EDIT_SELECT_LINE);
             menu.addMenuItem(Commands.EDIT_SPLIT_SEL_INTO_LINES);
             menu.addMenuItem(Commands.EDIT_ADD_CUR_TO_PREV_LINE);
@@ -99,12 +99,12 @@ define(function (require, exports, module) {
             menu.addMenuItem(Commands.SHOW_CODE_HINTS);
             menu.addMenuDivider();
             menu.addMenuItem(Commands.TOGGLE_CLOSE_BRACKETS);
-        }
+        // }
         
         /*
          * Find menu
          */
-        if(brackets.editorType === "IDE") {
+        // if(brackets.editorType === "IDE") {
 
             menu = Menus.addMenu(Strings.FIND_MENU, Menus.AppMenuBar.FIND_MENU);
             menu.addMenuItem(Commands.CMD_FIND);
@@ -121,13 +121,13 @@ define(function (require, exports, module) {
             menu.addMenuItem(Commands.CMD_REPLACE_IN_FILES);
             menu.addMenuItem(Commands.CMD_REPLACE_IN_SELECTED);
 
-        }
+        // }
         
         /*
          * View menu
          */
         menu = Menus.addMenu(Strings.VIEW_MENU, Menus.AppMenuBar.VIEW_MENU);
-        if(brackets.editorType === "IDE") {
+        // if(brackets.editorType === "IDE") {
 
             menu.addMenuItem(Commands.CMD_THEMES_OPEN_SETTINGS);
             menu.addMenuDivider();
@@ -149,12 +149,12 @@ define(function (require, exports, module) {
             menu.addMenuDivider();
             menu.addMenuItem(Commands.VIEW_TOGGLE_INSPECTION);
 
-        }
+        // }
         
         /*
          * Navigate menu
          */
-        if(brackets.editorType === "IDE") {
+        // if(brackets.editorType === "IDE") {
 
             menu = Menus.addMenu(Strings.NAVIGATE_MENU, Menus.AppMenuBar.NAVIGATE_MENU);
             menu.addMenuItem(Commands.NAVIGATE_QUICK_OPEN);
@@ -175,7 +175,7 @@ define(function (require, exports, module) {
             menu.addMenuDivider();
             menu.addMenuItem(Commands.TOGGLE_QUICK_DOCS);
 
-        }
+        // }
         
         /*
          * Help menu

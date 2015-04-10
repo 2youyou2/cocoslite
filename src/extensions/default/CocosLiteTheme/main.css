@@ -1,0 +1,279 @@
+.panel-header {
+  position: relative;
+  height: 19px;
+  padding: 10px 0 9px 12px;
+  background: #3c3f41;
+  color: #adb9bd;
+  text-shadow: none;
+  overflow: hidden;
+}
+
+.panel-header > span {
+  background: #3c3f41;
+  position: relative;
+  z-index: 9;
+}
+
+#hierarchy-content {
+  overflow: auto;
+  color: #adb9bd;
+}
+
+.tree-view ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tree-view ul li {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.tree-view ul li div {
+  padding: 3px;
+  padding-left: 50px;
+  cursor: pointer;
+}
+
+.tree-view.no-icon ul li div{
+  padding-left: 30px;
+}
+
+.tree-view ul li div.selected {
+  background-color: #2d2e30;
+  color: #8fddff;
+}
+.tree-view ul li ul li div {
+  padding-left: 65px;
+}
+.tree-view.no-icon ul li ul li div {
+  padding-left: 45px;
+}
+
+.tree-view ul li ul li ul li div {
+  padding-left: 86px;
+}
+.tree-view.no-icon ul li ul li ul li div {
+  padding-left: 65px;
+}
+.tree-view ul li ul li ul li ul li div {
+  padding-left: 107px;
+}
+.tree-view.no-icon ul li ul li ul li ul li div {
+  padding-left: 85px;
+}
+.tree-view ul li ul li ul li ul li ul li div {
+  padding-left: 127px;
+}
+.tree-view.no-icon ul li ul li ul li ul li ul li div {
+  padding-left: 105px;
+}
+.tree-view ul li ul li ul li ul li ul li ul li div {
+  padding-left: 147px;
+}
+.tree-view.no-icon ul li ul li ul li ul li ul li ul li div {
+  padding-left: 125px;
+}
+
+.tree-view .toggle {
+  top: 1px;
+  /*left: 13px;*/
+  margin-left: -45px;
+  position: absolute;
+  width: 24px;
+  margin-top: -2px;
+  height: 24px;
+}
+.tree-view.no-icon .toggle {
+  margin-left: -25px;
+}
+.tree-view .toggle.open {
+  background-image: url("images/expanded.svg");
+}
+.tree-view .toggle.closed {
+  background-image: url("images/collapsed.svg");
+}
+.tree-view .icon {
+  width: 13px;
+  height: 15px;
+  position: absolute;
+  top: 4px;
+  margin-left: -20px;
+  background-size: 13px auto;
+  background-repeat: no-repeat;
+}
+
+#inspector-content {
+  position: absolute;
+  right: 30px;
+  height: 100%;
+  background: #3c3f41;
+  color: #adb9bd;
+  font-weight:bold;
+  overflow: auto;
+}
+
+#inspector-content .inspector {
+  margin: 5px;
+}
+
+.component {
+  padding: 5px;
+  border-top: 1px solid #ccc;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13px;
+}
+
+.component .component-title {
+  font-size: 15px;
+}
+
+.component .row {
+  margin: 5px 0px 5px 15px;
+}
+
+.component .key {
+  width: 40%;
+  margin-top: 5px;
+  margin-right: 5px;
+  cursor: default;
+  float: left;
+}
+
+.component span {
+  display: inline-block; 
+}
+
+
+.component .value {
+  overflow: hidden;
+  display: block;
+}
+
+.component .value.array {
+  position: relative;
+  margin-left: 30px;
+  display: inline;
+}
+
+.component .array-item .number {
+  width:20%;
+  float:left;
+  margin-top: 5px;
+}
+
+.component .array-item {
+  margin-top: 5px;
+  margin-left: 60px;
+}
+
+.component table td{
+  border-left-width: 0px;
+  border-right-width: 0px;
+}
+
+.component input, .component input[type="text"] {
+  width: 100%;
+
+  color: #000000;
+  font-size: 14px;
+  font-weight: normal;
+  border-radius: 0px;
+  background: #e8edf2;
+  border: 0px;
+  padding: 4px 6px;
+  margin: 0px;
+}
+
+.component input:focus, .component input[type="text"]:focus {
+  outline: 1px solid #1baee1;
+}
+
+.add-component {
+  text-align: center;
+  width: 100%;
+  display: none;
+}
+
+.component-manager {
+  position: absolute;
+}
+
+
+/**
+* Custom Work For Brackets (https://github.com/DH3ALEJANDRO/custom-work-for-brackets)
+* --------------------------------------------------------------------*/
+#workfile-avril {
+  top: 42px;
+  right: 0;
+}
+.all-workfile {
+  background: #333639;
+  opacity: 1;
+}
+.AllTabWork,
+.avril-parent-work,
+.avril-parent-work .open-files-container ul,
+.avril-tabs-work,
+.avril-tabs-work div,
+.avril-tabs-work li {
+  height: 40px!important;
+}
+.btn-mainToolbar-bks,
+.btn-sidebar-bks,
+.all-workfile,
+.avril-parent-work .working-set-splitview-btn,
+.avril-parent-work .working-set-option-btn {
+  top: 10px!important;
+}
+.btn-mainToolbar-bks,
+.btn-sidebar-bks,
+.all-workfile {
+  margin-right: 15px;
+}
+.btn-sidebar-bks {
+  color: #21abd8;
+}
+#working-set-list-container > div:last-child ul {
+  padding-bottom: 15px!important;
+}
+.avril-tabs-work {
+  background-color: #333639 !important;
+}
+.avril-parent-work,
+.todoFunction,
+.avril-tabs-work ul#sortableOneWork li,
+.avril-tabs-work div {
+  height: 40px;
+}
+.avril-tabs-work ul li {
+  padding: 8px 30px 8px 20px;
+  height: 20px!important;
+  border-bottom: 3px solid #333639;
+}
+.avril-tabs-work ul li.selected {
+  background: #26282a !important;
+  border-bottom: 3px solid #21abd8 !important;
+  height: 20px!important;
+}
+.avril-tabs-work ul li:hover {
+  background: #26282a !important;
+  height: 20px!important;
+  border-bottom: 3px solid #21abd8;
+}
+.open-files-container ul li:before {
+  display: none;
+}
+
+/**
+* Side Bar
+* --------------------------------------------------------------------*/
+.sidebar-selection-extension, .filetree-selection-extension {
+    height: 22px;
+    border-bottom: none;
+    border-right: 3px solid rgba(33, 171, 216, 0.75);
+}
+
+.jstree-brackets li .extension, .jstree-brackets li a, .jstree-brackets li a:hover {
+    color: rgba(128, 128, 128, 1);
+}
