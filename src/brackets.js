@@ -23,7 +23,7 @@
 
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50 */
-/*global define, brackets: true, $, window, navigator, Mustache */
+/*global define, brackets: true, $, window, navigator, Mustache, jQuery */
 
 // TODO: (issue #264) break out the definition of brackets into a separate module from the application controller logic
 
@@ -43,7 +43,6 @@ define(function (require, exports, module) {
     require("widgets/bootstrap-modal");
     require("widgets/bootstrap-twipsy-mod");
     require("thirdparty/path-utils/path-utils.min");
-    require("thirdparty/smart-auto-complete-local/jquery.smart_autocomplete");
 
     // Load CodeMirror add-ons--these attach themselves to the CodeMirror module    
     require("thirdparty/CodeMirror2/addon/fold/xml-fold");
@@ -168,6 +167,7 @@ define(function (require, exports, module) {
     };
 
     
+
     /**
      * Setup test object
      */
@@ -341,7 +341,7 @@ define(function (require, exports, module) {
                 });
             });
         });
-        
+
         // Check for updates
         if (!params.get("skipUpdateCheck") && !brackets.inBrowser) {
             AppInit.appReady(function () {
@@ -386,36 +386,10 @@ define(function (require, exports, module) {
         
         // Update title
         $("title").text(brackets.config.app_title);
-            
-        // Prevent unhandled drag and drop of files into the browser from replacing 
-        // the entire Brackets app. This doesn't prevent children from choosing to
-        // handle drops.
-        $(window.document.body)
-            .on("dragover", function (event) {
-                var dropEffect = "none";
-                if (event.originalEvent.dataTransfer.files) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    // Don't allow drag-and-drop of files/folders when a modal dialog is showing.
-                    if ($(".modal.instance").length === 0 &&
-                            DragAndDrop.isValidDrop(event.originalEvent.dataTransfer.items)) {
-                        dropEffect = "copy";
-                    }
-                    event.originalEvent.dataTransfer.dropEffect = dropEffect;
-                }
-            })
-            .on("drop", function (event) {
-                var files = event.originalEvent.dataTransfer.files;
-                if (files && files.length) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    brackets.app.getDroppedFiles(function (err, paths) {
-                        if (!err) {
-                            DragAndDrop.openDroppedFiles(paths);
-                        }
-                    });
-                }
-            });
+        
+        // Respond to dragging & dropping files/folders onto the window by opening them. If we don't respond
+        // to these events, the file would load in place of the Brackets UI
+        DragAndDrop.attachHandlers();
         
         // TODO: (issue 269) to support IE, need to listen to document instead (and even then it may not work when focus is in an input field?)
         $(window).focus(function () {
@@ -469,6 +443,7 @@ define(function (require, exports, module) {
         }, true);
         
         // Prevent extensions from using window.open() to insecurely load untrusted web content
+
         // var real_windowOpen = window.open;
         // window.open = function (url) {
         //     // Allow file:// URLs, relative URLs (implicitly file: also), and about:blank
@@ -477,6 +452,27 @@ define(function (require, exports, module) {
         //     }
         //     return real_windowOpen.apply(window, arguments);
         // };
+        
+        // jQuery patch to shim deprecated usage of $() on EventDispatchers
+        var DefaultCtor = jQuery.fn.init;
+        jQuery.fn.init = function (firstArg, secondArg) {
+            var jQObject = new DefaultCtor(firstArg, secondArg);
+
+            // Is this a Brackets EventDispatcher object? (not a DOM node or other object)
+            if (firstArg && firstArg._EventDispatcher) {
+                // Patch the jQ wrapper object so it calls EventDispatcher's APIs instead of jQuery's
+                jQObject.on  = firstArg.on.bind(firstArg);
+                jQObject.one = firstArg.one.bind(firstArg);
+                jQObject.off = firstArg.off.bind(firstArg);
+                // Don't offer legacy support for trigger()/triggerHandler() on core model objects; extensions
+                // shouldn't be doing that anyway since it's basically poking at private API
+
+                // Console warning, since $() is deprecated for EventDispatcher objects
+                // (pass true to only print once per caller, and index 4 since the extension caller is deeper in the stack than usual)
+                DeprecationWarning.deprecationWarning("Deprecated: Do not use $().on/off() on Brackets modules and model objects. Call on()/off() directly on the object without a $() wrapper.", true, 4);
+            }
+            return jQObject;
+        };
     }
     
     // Wait for view state to load.

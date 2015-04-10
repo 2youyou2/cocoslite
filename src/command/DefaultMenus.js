@@ -105,7 +105,6 @@ define(function (require, exports, module) {
          * Find menu
          */
         // if(brackets.editorType === "IDE") {
-
             menu = Menus.addMenu(Strings.FIND_MENU, Menus.AppMenuBar.FIND_MENU);
             menu.addMenuItem(Commands.CMD_FIND);
             menu.addMenuItem(Commands.CMD_FIND_NEXT);
@@ -115,12 +114,9 @@ define(function (require, exports, module) {
             menu.addMenuItem(Commands.CMD_SKIP_CURRENT_MATCH);
             menu.addMenuDivider();
             menu.addMenuItem(Commands.CMD_FIND_IN_FILES);
-            menu.addMenuItem(Commands.CMD_FIND_IN_SELECTED);
             menu.addMenuDivider();
             menu.addMenuItem(Commands.CMD_REPLACE);
             menu.addMenuItem(Commands.CMD_REPLACE_IN_FILES);
-            menu.addMenuItem(Commands.CMD_REPLACE_IN_SELECTED);
-
         // }
         
         /*
@@ -202,7 +198,6 @@ define(function (require, exports, module) {
 
         menu.addMenuDivider();
         menu.addMenuItem(Commands.HELP_SHOW_EXT_FOLDER);
-
 
         var hasAboutItem = (brackets.platform !== "mac" || !brackets.nativeMenus);
         
