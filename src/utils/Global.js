@@ -81,6 +81,26 @@ define(function (require, exports, module) {
             gui = window.nodeRequire('nw.gui'),
             win = gui.Window.get();
 
+        var $openFile = $("#openFile");
+        var $saveFile = $("#saveFile");
+
+        var onChosenFileToOpen = null;
+        var onChosenFileToSave = null;
+
+        $openFile[0].addEventListener("change", function(evt) {
+            if(onChosenFileToOpen) {
+                var files = $(this).val();
+                files = files.split(';');
+                onChosenFileToOpen(null, files);
+            }
+        }, false);
+
+        $saveFile[0].addEventListener("change", function(evt) {
+            if(onChosenFileToSave) {
+                onChosenFileToSave(null, $(this).val());
+            }
+        }, false);
+
         // Adapt to brackets's API
         global.brackets.fs = {
             NO_ERROR: 0,
@@ -166,8 +186,48 @@ define(function (require, exports, module) {
             isNetworkDrive: function (path, callback) {
                 // TODO
                 callback(global.brackets.fs.ERR_UNKNOWN);
+            },
+
+            showOpenDialog: function(allowMultipleSelection, chooseDirectory, title, initialPath, fileTypes, callback) {
+                onChosenFileToOpen = callback;
+
+                if(allowMultipleSelection) {
+                    $openFile.attr("multiple", "");
+                }
+
+                if(chooseDirectory) {
+                    $openFile.attr("nwdirectory", "");
+                }
+
+                if(initialPath) {
+                    $openFile.attr("nwworkingdir", initialPath);
+                }
+
+                try{
+                    $openFile.trigger("click");    
+                }
+                catch(err){
+                    callback(err);
+                }
+                
+
+                $openFile.removeAttr("multiple");
+                $openFile.removeAttr("nwdirectory");
+                $openFile.removeAttr("nwworkingdir");
+            },
+
+            showSaveDialog: function(title, initialPath, proposedNewFilename, callback) {
+                onChosenFileToSave = callback;
+
+                try{
+                    $saveFile.trigger("click");
+                }
+                catch(err){
+                    callback(err);
+                }
             }
         };
+
 
         // Other symbols
         var i;
@@ -187,7 +247,7 @@ define(function (require, exports, module) {
         };
         
         app.getApplicationSupportDirectory = function () {
-            return "/Users/jasonsj/Library/Application Support/Brackets";
+            return "/Users/youyou/Library/Application Support/Brackets";
         };
         
         // Menu
