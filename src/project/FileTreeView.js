@@ -36,6 +36,7 @@ define(function (require, exports, module) {
         Immutable         = require("thirdparty/immutable"),
         _                 = require("thirdparty/lodash"),
         FileUtils         = require("file/FileUtils"),
+        LanguageManager   = require("language/LanguageManager"),
         FileTreeViewModel = require("project/FileTreeViewModel"),
         ViewUtils         = require("utils/ViewUtils"),
         KeyEvent          = require("utils/KeyEvent");
@@ -139,7 +140,7 @@ define(function (require, exports, module) {
          * The rename or create operation can be completed or canceled by actions outside of
          * this component, so we keep the model up to date by sending every update via an action.
          */
-        handleKeyUp: function (e) {
+        handleInput: function (e) {
             this.props.actions.setRenameValue(this.refs.name.getDOMNode().value.trim());
 
             if (e.keyCode !== KeyEvent.DOM_VK_LEFT &&
@@ -178,7 +179,7 @@ define(function (require, exports, module) {
          */
         componentDidMount: function () {
             var fullname = this.props.name,
-                extension = FileUtils.getSmartFileExtension(fullname);
+                extension = LanguageManager.getCompoundFileExtension(fullname);
 
             var node = this.refs.name.getDOMNode();
             node.setSelectionRange(0, _getName(fullname, extension).length);
@@ -194,7 +195,7 @@ define(function (require, exports, module) {
                 defaultValue: this.props.name,
                 autoFocus: true,
                 onKeyDown: this.handleKeyDown,
-                onKeyUp: this.handleKeyUp,
+                onInput: this.handleInput,
                 onClick: this.handleClick,
                 onBlur: this.handleBlur,
                 style: {
@@ -222,6 +223,12 @@ define(function (require, exports, module) {
                 this.props.actions.setContext(this.myPath());
                 return false;
             }
+            // Return true only for mouse down in rename mode.
+            if (this.props.entry.get("rename")) {
+                e.stopPropagation();
+                return true;
+            }
+            return false;
         }
     };
 
@@ -258,16 +265,16 @@ define(function (require, exports, module) {
                 result = extensions.get("icons").map(function (callback) {
                     try {
                         var result = callback(data);
-                        if (!React.isValidComponent(result)) {
+                        if (result && !React.isValidComponent(result)) {
                             result = React.DOM.span({
                                 dangerouslySetInnerHTML: {
                                     __html: $(result)[0].outerHTML
                                 }
                             });
                         }
-                        return result;
+                        return result;  // by this point, returns either undefined or a React object
                     } catch (e) {
-                        console.warn("Exception thrown in FileTreeView icon provider:", e);
+                        console.error("Exception thrown in FileTreeView icon provider: " + e, e.stack);
                     }
                 }).filter(isDefined).toArray();
             }
@@ -296,7 +303,7 @@ define(function (require, exports, module) {
                     try {
                         return callback(data);
                     } catch (e) {
-                        console.warn("Exception thrown in FileTreeView addClass provider:", e);
+                        console.error("Exception thrown in FileTreeView addClass provider: " + e, e.stack);
                     }
                 }).filter(isDefined).toArray().join(" ");
             }
@@ -419,7 +426,7 @@ define(function (require, exports, module) {
         /**
          * Create the data object to pass to extensions.
          *
-         * @return {{name: {string}, isFile: {boolean}, fullPath: {string}}} Data for extensions
+         * @return {!{name:string, isFile:boolean, fullPath:string}} Data for extensions
          */
         getDataForExtension: function () {
             return {
@@ -431,7 +438,7 @@ define(function (require, exports, module) {
 
         render: function () {
             var fullname = this.props.name,
-                extension = FileUtils.getSmartFileExtension(fullname),
+                extension = LanguageManager.getCompoundFileExtension(fullname),
                 name = _getName(fullname, extension);
 
             if (extension) {
@@ -539,6 +546,17 @@ define(function (require, exports, module) {
     var directoryRenameInput = React.createClass({
         mixins: [renameBehavior],
 
+        /**
+         * When this component is displayed, we scroll it into view and select the folder name.
+         */
+        componentDidMount: function () {
+            var fullname = this.props.name;
+
+            var node = this.refs.name.getDOMNode();
+            node.setSelectionRange(0, fullname.length);
+            ViewUtils.scrollElementIntoView($("#project-files-container"), $(node), true);
+        },
+
         render: function () {
             var width = _measureText(this.props.name);
 
@@ -548,7 +566,7 @@ define(function (require, exports, module) {
                 defaultValue: this.props.name,
                 autoFocus: true,
                 onKeyDown: this.handleKeyDown,
-                onKeyUp: this.handleKeyUp,
+                onInput: this.handleInput,
                 onBlur: this.handleBlur,
                 style: {
                     width: width
@@ -1026,29 +1044,14 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Adds an icon provider. The icon provider is a function which takes a data object and
-     * returns a React.DOM.ins instance for the icons within the tree. The callback can
-     * alternatively return a string, DOM node or a jQuery object for the ins node to be added.
-     *
-     * The data object contains:
-     *
-     * * `name`: the file or directory name
-     * * `fullPath`: full path to the file or directory
-     * * `isFile`: true if it's a file, false if it's a directory
+     * @see {@link ProjectManager::#addIconProvider}
      */
     function addIconProvider(callback) {
         _addExtension("icons", callback);
     }
 
     /**
-     * Adds an additional classes provider which can return classes that should be added to a
-     * given file or directory in the tree.
-     *
-     * The data object contains:
-     *
-     * * `name`: the file or directory name
-     * * `fullPath`: full path to the file or directory
-     * * `isFile`: true if it's a file, false if it's a directory
+     * @see {@link ProjectManager::#addClassesProvider}
      */
     function addClassesProvider(callback) {
         _addExtension("addClass", callback);
