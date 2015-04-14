@@ -119,8 +119,19 @@
   top: 0px;
 }
 
+
 #inspector-content .inspector {
   margin: 5px;
+}
+
+#inspector-content .component-title .indicate{
+  position: absolute;
+  right: 20px;
+}
+
+#inspector-content .component-title .indicate{
+  position: absolute;
+  right: 20px;
 }
 
 .component {
@@ -260,7 +271,7 @@
 }
 
 #play-bar .game-control-btn.checked {
-  background: #068eb0;
+  background: #068eb0!important;
 }
 
 /**
@@ -312,12 +323,14 @@
   height: 25px!important;
   color: #adb9bd!important;
 }
+.avril-tabs-work ul li:hover {
+  color: #8fddff!important;
+  background: rgba(255,255,255,0.1)!important;
+}
 .avril-tabs-work ul li.selected {
   background: #535358!important;
 }
-.avril-tabs-work ul li:hover {
-  color: #8fddff!important;
-}
+
 .open-files-container ul li:before {
   display: none;
 }
