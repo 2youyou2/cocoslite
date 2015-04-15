@@ -24,89 +24,124 @@
   color: #adb9bd;
 }
 
-.tree-view ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.tree-view ul li {
-  margin: 0;
-  padding: 0;
-  position: relative;
-}
-.tree-view ul li div {
-  padding: 3px;
-  padding-left: 50px;
-  cursor: pointer;
+.jstree-brackets li a {
+  padding-left: 4px;
+  display: block;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
-.tree-view.no-icon ul li div{
+.jstree-brackets li a:focus {
+  box-shadow: initial;
+}
+
+.jstree-brackets li ins {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.jstree-brackets ul {
+  padding-left: 8px;
+}
+
+.jstree-brackets .jstree-no-dots .jstree-open > ins ,
+.jstree-brackets .jstree-no-dots .jstree-closed > ins{
+  background-image: url();
+  font-size: 10px;
+  line-height: 20px;
+  left: -8px!important;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  -webkit-transition: initial;
+  -webkit-transform:initial;
+}
+
+.jstree-open > ins:before {
+  font-family: 'FontAwesome', sans-serif;
+  content: "\f068";
+}
+.jstree-closed > ins:before {
+  font-family: 'FontAwesome', sans-serif;
+  content: "\f067";
+}
+
+#hierarchy {
+  padding: 6px;
+  font-size: 13px;
+  font-family: "Lato","Helvetica Neue",Arial,sans-serif;
+}
+.ui-tree-nodes {
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ui-tree-nodes .ui-tree-nodes {
   padding-left: 30px;
 }
-
-.tree-view ul li div.selected {
-  background-color: #2d2e30;
-  color: #8fddff;
+.ui-tree-node{
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  min-height: 20px;
+  line-height: 20px;
 }
-.tree-view ul li ul li div {
-  padding-left: 65px;
+.ui-tree-handle {
+  position: relative;
+  display: block;
+  margin: 2px 0;
+  padding: 1px 10px;
+  text-decoration: none;
+  border: 2px solid #5c6065;
+  /*background: #fff;*/
+  border-radius: 0;
+  overflow: hidden;
 }
-.tree-view.no-icon ul li ul li div {
-  padding-left: 45px;
+.ui-tree-handle.selected {
+  border: 2px solid #ccc;
 }
-
-.tree-view ul li ul li ul li div {
-  padding-left: 86px;
+.ui-tree-icon-collapse {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  float: left;
+  width: 25px;
+  height: 30px;
+  margin: -11px 0 0 -11px;
+  padding: 0;
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  font-size: 12px;
+  line-height: 40px;
+  text-align: center;
+  font-weight: bold;
 }
-.tree-view.no-icon ul li ul li ul li div {
-  padding-left: 65px;
-}
-.tree-view ul li ul li ul li ul li div {
-  padding-left: 107px;
-}
-.tree-view.no-icon ul li ul li ul li ul li div {
-  padding-left: 85px;
-}
-.tree-view ul li ul li ul li ul li ul li div {
-  padding-left: 127px;
-}
-.tree-view.no-icon ul li ul li ul li ul li ul li div {
-  padding-left: 105px;
-}
-.tree-view ul li ul li ul li ul li ul li ul li div {
-  padding-left: 147px;
-}
-.tree-view.no-icon ul li ul li ul li ul li ul li ul li div {
-  padding-left: 125px;
-}
-
-.tree-view .toggle {
-  top: 1px;
-  /*left: 13px;*/
-  margin-left: -45px;
+.ui-tree-icon-collapse:before {
+  content: '+';
+  display: block;
   position: absolute;
-  width: 24px;
-  margin-top: -2px;
-  height: 24px;
+  width: 100%;
+  text-align: center;
+  text-indent: 0;
 }
-.tree-view.no-icon .toggle {
-  margin-left: -25px;
+.ui-tree-icon-collapse.uncollapsed:before {
+  content: '-';
 }
-.tree-view .toggle.open {
-  background-image: url("images/expanded.svg");
-}
-.tree-view .toggle.closed {
-  background-image: url("images/collapsed.svg");
-}
-.tree-view .icon {
-  width: 13px;
-  height: 15px;
+.ui-tree-icon-eye {
   position: absolute;
-  top: 4px;
-  margin-left: -20px;
-  background-size: 13px auto;
-  background-repeat: no-repeat;
+  right: 10px;
 }
+.ui-tree-icon-lock {
+  position: absolute;
+  right: 30px;
+  width: 12px;
+}
+
 
 #inspector-content {
   position: absolute;
@@ -122,11 +157,6 @@
 
 #inspector-content .inspector {
   margin: 5px;
-}
-
-#inspector-content .component-title .indicate{
-  position: absolute;
-  right: 20px;
 }
 
 #inspector-content .component-title .indicate{
