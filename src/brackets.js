@@ -151,13 +151,6 @@ define(function (require, exports, module) {
     // read URL params
     params.parse();
 
-    var type = params.get("editorType");
-    brackets.editorType = type ? type : "GameEditor";
-    brackets.config.app_title += (brackets.platform === "mac" ? " \u2014 " : " - ") + brackets.editorType;
-
-    if(appshell.app.focus) {
-        window.focus = appshell.app.focus;
-    }
     window.focus();
 
     // String

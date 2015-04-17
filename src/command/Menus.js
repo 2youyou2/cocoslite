@@ -335,6 +335,7 @@ define(function (require, exports, module) {
      */
     function Menu(id) {
         this.id = id;
+        this.menuItems = {};
     }
 
     Menu.prototype._getMenuItemId = function (commandId) {
@@ -467,6 +468,7 @@ define(function (require, exports, module) {
         }
 
         delete menuItemMap[menuItemID];
+        delete this.menuItems[menuItemID];
     };
 
     /**
@@ -518,6 +520,7 @@ define(function (require, exports, module) {
         }
 
         delete menuItemMap[menuItemID];
+        delete this.menuItems[menuItemID];
     };
 
     /**
@@ -589,6 +592,7 @@ define(function (require, exports, module) {
         // create MenuItem
         menuItem = new MenuItem(id, command);
         menuItemMap[id] = menuItem;
+        this.menuItems[id] = menuItem;
 
         // create MenuItem DOM
         if (_isHTMLMenu(this.id)) {

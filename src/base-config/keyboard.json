@@ -24,7 +24,7 @@
         "Ctrl-Shift-S"
     ],    
     "file.liveFilePreview":  [
-        "Ctrl-Alt-P"
+        "Ctrl-Alt-W"
     ],
     "file.reloadLivePreview": [
         {
@@ -345,5 +345,20 @@
     ],
     "help.support": [
         "F1"
+    ],
+    "cl.play": [
+        "Ctrl-P"
+    ],
+    "cl.pause": [
+        "Ctrl-Shift-P"
+    ],
+    "cl.step": [
+        "Ctrl-Alt-P"
+    ],
+    "cl.gameObject.new": [
+        "Ctrl-Shift-N"
+    ],
+    "cl.component.new": [
+        "Ctrl-Shift-A"
     ]
 }

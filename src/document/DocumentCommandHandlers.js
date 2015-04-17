@@ -287,7 +287,8 @@ define(function (require, exports, module) {
 
         // cocoslite
         if(fullPath.endWith(".js") && brackets.editorType === "GameEditor") {
-            CommandManager.execute(Commands.CMD_OPEN_SCRIPT, fullPath);
+            // Commands.CMD_OPEN_SCRIPT
+            CommandManager.execute("cl.openScript", fullPath);
             return result.promise();
         }
 
