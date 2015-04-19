@@ -95,9 +95,11 @@
   padding: 1px 10px;
   text-decoration: none;
   border: 2px solid #5c6065;
-  /*background: #fff;*/
   border-radius: 0;
   overflow: hidden;
+}
+.ui-tree-handle:hover {
+  border: 2px solid rgba(204,204,204,0.5);
 }
 .ui-tree-handle.selected {
   border: 2px solid #ccc;
@@ -161,7 +163,12 @@
 
 #inspector-content .component-title .indicate{
   position: absolute;
-  right: 20px;
+  left: 15px;
+}
+
+#inspector-content .component-title .settings{
+  position: absolute;
+  right: 12px;
 }
 
 .component {
@@ -174,6 +181,7 @@
   font-size: 15px;
   background: #5c6065;
   padding: 5px;
+  padding-left: 30px;
 }
 
 .component .component-content {
@@ -236,6 +244,7 @@
   border: 0px;
   padding: 4px 6px;
   margin: 0px;
+  /*display: block;*/
 }
 
 .component input:focus, .component input[type="text"]:focus {
@@ -304,6 +313,10 @@
   background: #068eb0!important;
 }
 
+#Cocos2dGameContainer {
+  margin: initial!important;
+}
+
 /**
 * Custom Work For Brackets (https://github.com/DH3ALEJANDRO/custom-work-for-brackets)
 * --------------------------------------------------------------------*/
@@ -367,6 +380,7 @@
 
 .avril-tabs-work {
   left: 0px;
+  background: #2b2b2b;
 }
 
 .working-set-option-btn,
@@ -419,6 +433,7 @@ body {
 
 #editor-holder {
   background: #535358;
+  overflow: hidden;
 }
 
 #main-toolbar {
