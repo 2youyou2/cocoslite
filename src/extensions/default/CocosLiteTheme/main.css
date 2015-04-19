@@ -185,20 +185,20 @@
 }
 
 .component .component-content {
-  padding: 5px;
+  padding-top: 5px;
   display: block;
 }
 
 .component .row {
-  margin: 5px 0px 5px 15px;
+  margin: 2px 0px 2px 15px;
 }
 
 .component .key {
   width: 40%;
-  margin-top: 5px;
   margin-right: 5px;
   cursor: default;
   float: left;
+  line-height: 28px;
 }
 
 .component span {
@@ -209,6 +209,12 @@
 .component .value {
   overflow: hidden;
   display: block;
+  line-height: 28px;
+}
+
+.component .value.fa-square-o,
+.component .value.fa-check {
+  line-height: 30px;
 }
 
 .component .value.array {
@@ -236,15 +242,19 @@
 .component input, .component input[type="text"] {
   width: 100%;
 
-  color: #000000;
+  color: #dce4ec;
   font-size: 14px;
   font-weight: normal;
   border-radius: 0px;
-  background: #e8edf2;
+  background: #5c6065;
   border: 0px;
   padding: 4px 6px;
   margin: 0px;
-  /*display: block;*/
+  box-sizing: border-box;
+  -webkit-font-smoothing: initial;
+}
+.component input[type="text"] {
+  height: 26px;
 }
 
 .component input:focus, .component input[type="text"]:focus {
