@@ -1333,6 +1333,7 @@ define(function (require, exports, module) {
     exports._ensureTrailingSlash    = _ensureTrailingSlash;
     exports._shouldShowName         = _shouldShowName;
     exports._invalidChars           = _invalidChars;
+    exports._exclusionListRegEx     = _exclusionListRegEx;
 
     exports.shouldShow              = shouldShow;
     exports.isValidFilename         = isValidFilename;
