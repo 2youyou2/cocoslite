@@ -20,7 +20,6 @@
 }
 
 #hierarchy-content {
-  overflow: auto;
   color: #adb9bd;
 }
 
@@ -69,6 +68,9 @@
   padding: 6px;
   font-size: 13px;
   font-family: "Lato","Helvetica Neue",Arial,sans-serif;
+  color: #adb9bd;
+  height: 100%;
+  position: relative;
 }
 .ui-tree-nodes {
   display: block;
@@ -151,14 +153,15 @@
   height: 100%;
   background: #484a4f;
   color: #adb9bd;
-  /*font-weight:bold;*/
-  overflow: auto;
   top: 0px;
 }
 
 
 #inspector-content .inspector {
   margin: 5px;
+  overflow: auto;
+  height: 100%;
+  position: relative;
 }
 
 #inspector-content .component-title .indicate{
@@ -185,7 +188,7 @@
 }
 
 .component .component-content {
-  padding-top: 5px;
+  padding-top: 1px;
   display: block;
 }
 
