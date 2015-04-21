@@ -620,7 +620,7 @@ define(function (require, exports, module) {
      * @private
      * @param {boolean} isFolder - true if creating a new folder, false if creating a new file
      */
-    function _handleNewItemInProject(isFolder) {
+    function _handleNewItemInProject(isFolder, baseFileName, extension, cb) {
         if (fileNewInProgress) {
             ProjectManager.forceFinishRename();
             return;
@@ -648,12 +648,21 @@ define(function (require, exports, module) {
         // Create the new node. The createNewItem function does all the heavy work
         // of validating file name, creating the new file and selecting.
         function createWithSuggestedName(suggestedName) {
+            suggestedName = extension ? suggestedName + extension : suggestedName;
+
             return ProjectManager.createNewItem(baseDirEntry, suggestedName, false, isFolder)
-                .always(function () { fileNewInProgress = false; });
+                .always(function (file) { 
+                    fileNewInProgress = false; 
+                    if(cb) {
+                        cb(file);
+                    }
+                });
         }
 
-        return _getUntitledFileSuggestion(baseDirEntry, Strings.UNTITLED, isFolder)
-            .then(createWithSuggestedName, createWithSuggestedName.bind(undefined, Strings.UNTITLED));
+        baseFileName = baseFileName ? baseFileName : Strings.UNTITLED;
+
+        return _getUntitledFileSuggestion(baseDirEntry, baseFileName, isFolder)
+            .then(createWithSuggestedName, createWithSuggestedName.bind(undefined, baseFileName));
     }
 
     /**
@@ -676,15 +685,15 @@ define(function (require, exports, module) {
     /**
      * Create a new file in the project tree.
      */
-    function handleFileNewInProject() {
-        _handleNewItemInProject(false);
+    function handleFileNewInProject(baseFileName, extension, cb) {
+        _handleNewItemInProject(false, baseFileName, extension, cb);
     }
 
     /**
      * Create a new folder in the project tree.
      */
-    function handleNewFolderInProject() {
-        _handleNewItemInProject(true);
+    function handleNewFolderInProject(baseFileName, extension, cb) {
+        _handleNewItemInProject(true, baseFileName, extension, cb);
     }
 
     /**
