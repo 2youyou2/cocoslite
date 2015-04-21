@@ -198,10 +198,11 @@
 
 .component .key {
   width: 40%;
-  margin-right: 5px;
+  padding-right: 5px;
   cursor: default;
   float: left;
   line-height: 28px;
+  box-sizing: border-box;
 }
 
 .component span {
@@ -255,6 +256,10 @@
   margin: 0px;
   box-sizing: border-box;
   -webkit-font-smoothing: initial;
+  transition: 0.25s;
+}
+.component input:hover, .component input[type="text"]:hover {
+  background-color: #6E7277;
 }
 .component input[type="text"] {
   height: 26px;
@@ -262,6 +267,28 @@
 
 .component input:focus, .component input[type="text"]:focus {
   outline: 1px solid #1baee1;
+}
+
+.component .sprite {
+  height: 65px;
+}
+.component .sprite .search {
+  position: absolute;
+  margin-left: 48px;
+  margin-top: 45px;
+  height: 18px;
+  line-height: 18px;
+  cursor: pointer;
+}
+.component .sprite .search:hover {
+  color:#eee;
+}
+.component .sprite img {
+  width: 60px;
+  height: 60px;
+  border: 2px solid;
+  display: block
+  cursor: pointer;
 }
 
 .add-component {
@@ -272,6 +299,27 @@
 
 .component-manager {
   position: absolute;
+}
+
+.asset-viewer {
+  display:inline-block;
+  background-size: 100px 100px;
+  width:100px;
+  height:100px
+}
+.asset-block {
+  display: inline-block;
+  margin: 15px;
+}
+.asset-name {
+  position: absolute;
+  width: 100px;
+  text-align: center;
+}
+.asset-row {
+float: left;
+height: 120px;
+margin: 10px;
 }
 
 .top-bar {
@@ -464,4 +512,193 @@ body {
 
 .jstree-brackets li .extension, .jstree-brackets li a, .jstree-brackets li a:hover {
     color: rgba(128, 128, 128, 1);
+}
+
+
+/**
+* dropkick
+* --------------------------------------------------------------------*/
+.dk_container {
+    cursor: pointer;
+    font-size: 14px;
+    /*margin-bottom: 10px;*/
+    outline: none;
+}
+
+.dk_toggle {
+  background-color: #5c6065;
+  overflow: hidden;
+  padding: 0px 45px 0px 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  -webkit-transition: 0.25s;
+  -moz-transition: 0.25s;
+  -o-transition: 0.25s;
+  transition: 0.25s;
+  -webkit-backface-visibility: hidden;
+  color: #dce4ec;
+  font-size: 14px;
+}
+.dk_toggle:hover, .dk_toggle:focus, .dk_focus .dk_toggle {
+    background-color: #6E7277;
+    color: white;
+    outline: none;
+}
+.dk_toggle:active {
+    background-color: #6E7277;
+    outline: none;
+}
+.dk_toggle:active .select-icon {
+    background-color: #6E7277;
+}
+
+.dk_toggle .select-icon {
+  border-bottom: 2px solid #484a4f;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 42px;
+  -webkit-transition: 0.25s;
+  -moz-transition: 0.25s;
+  -o-transition: 0.25s;
+  transition: 0.25s;
+  -webkit-backface-visibility: hidden;
+  text-align: center;
+  -webkit-transform: rotate(90deg);
+  font-size: 11px;
+}
+
+.dk_open {
+    z-index: 10;
+}
+.dk_open .dk_toggle {
+    background-color: #6E7277;
+}
+.dk_open .dk_toggle .select-icon {
+    background-color: #6E7277;
+}
+
+.dk_options {
+    padding-top: 14px;
+}
+.dk_options:before {
+    content: "";
+    border-style: solid;
+    border-width: 0 9px 9px 9px;
+    border-color: transparent transparent #6E7277 transparent;
+    height: 0px;
+    position: absolute;
+    left: 15px;
+    top: 5px;
+    width: 0px;
+    -webkit-transform: rotate(360deg);
+}
+.dk_options:before {
+    left: auto;
+    right: 12px;
+}
+.dk_options li {
+    padding-bottom: 3px;
+}
+.dk_options a {
+    /*border-radius: 3px;*/
+    color: white;
+    display: block;
+    padding: 5px 9px;
+    text-decoration: none;
+}
+.dk_options a:hover {
+    background-color: #1abc9c;
+}
+
+.dk_option_current a {
+    background-color: #1abc9c;
+}
+
+.dk_options_inner {
+    background-color: #6E7277;
+    /*border-radius: 5px;*/
+    margin: 0;
+    max-height: 244px;
+    padding: 3px 3px 0;
+}
+
+.dk_touch .dk_options {
+    max-height: 250px;
+}
+
+.dk_container {
+    display: none;
+    position: relative;
+    vertical-align: middle;
+}
+.dk_container.dk_shown {
+    display: block;
+    zoom: 1;
+    *display: inline;
+}
+.dk_container[class*="span"] {
+    float: none;
+    margin-left: 0;
+}
+
+.dk_toggle {
+    display: block;
+    position: relative;
+}
+
+.dk_open {
+    position: relative;
+}
+.dk_open .dk_options {
+    margin-top: -1px;
+    opacity: 1;
+    z-index: 10;
+    display: block\9;
+}
+.dk_open .dk_label {
+    color: inherit;
+}
+
+.dk_options {
+    margin-top: -21px;
+    position: absolute;
+    right: 0;
+    opacity: 0;
+    width: 60%;
+    z-index: -100;
+    display: none\9;
+    -webkit-transition: 0.3s ease-out;
+    -moz-transition: 0.3s ease-out;
+    -o-transition: 0.3s ease-out;
+    transition: 0.3s ease-out;
+    -webkit-backface-visibility: hidden;
+}
+.select-right .dk_options {
+    left: auto;
+    right: 0;
+}
+.dk_options a {
+    display: block;
+}
+
+.dk_options_inner {
+    overflow: auto;
+    outline: none;
+    position: relative;
+}
+
+.dk_touch .dk_options {
+    overflow: hidden;
+}
+.dk_touch .dk_options_inner {
+    max-height: none;
+    overflow: visible;
+}
+
+.dk_fouc select {
+    position: relative;
+    top: -99999em;
+    visibility: hidden;
 }
