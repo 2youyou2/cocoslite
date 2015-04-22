@@ -669,14 +669,14 @@ define(function (require, exports, module) {
      * Create a new untitled document in the workingset, and make it the current document.
      * Promise is resolved (synchronously) with the newly-created Document.
      */
-    function handleFileNew() {
+    function handleFileNew(baseFileName, extension, content) {
         //var defaultExtension = PreferencesManager.get("defaultExtension");
         //if (defaultExtension) {
         //    defaultExtension = "." + defaultExtension;
         //}
-        var defaultExtension = "";  // disable preference setting for now
+        var defaultExtension = extension ? extension : "";  // disable preference setting for now
 
-        var doc = DocumentManager.createUntitledDocument(_nextUntitledIndexToUse++, defaultExtension);
+        var doc = DocumentManager.createUntitledDocument(_nextUntitledIndexToUse++, defaultExtension, baseFileName, content);
         MainViewManager._edit(MainViewManager.ACTIVE_PANE, doc);
 
         return new $.Deferred().resolve(doc).promise();
@@ -962,7 +962,7 @@ define(function (require, exports, module) {
                 }
 
                 // If the document is untitled, default to project root.
-                saveAsDefaultPath = ProjectManager.getProjectRoot().fullPath;
+                saveAsDefaultPath = doc.saveAsDefaultPath ? doc.saveAsDefaultPath : ProjectManager.getProjectRoot().fullPath;
             } else {
                 saveAsDefaultPath = FileUtils.getDirectoryPath(origPath);
             }

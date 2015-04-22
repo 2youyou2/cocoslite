@@ -448,13 +448,15 @@ define(function (require, exports, module) {
      * @param {string} fileExt - file extension of the new Document's File, including "."
      * @return {Document} - a new untitled Document
      */
-    function createUntitledDocument(counter, fileExt) {
-        var filename = Strings.UNTITLED + "-" + counter + fileExt,
+    function createUntitledDocument(counter, fileExt, baseFileName, content) {
+            baseFileName = baseFileName ? baseFileName : Strings.UNTITLED;
+
+        var filename = baseFileName + "-" + counter + fileExt,
             fullPath = _untitledDocumentPath + "/" + filename,
             now = new Date(),
             file = new InMemoryFile(fullPath, FileSystem);
         
-        return new DocumentModule.Document(file, now, "");
+        return new DocumentModule.Document(file, now, content);
     }
     
     /**
