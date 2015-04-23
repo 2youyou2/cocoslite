@@ -198,11 +198,12 @@
 
 .component .key {
   width: 40%;
-  padding-right: 5px;
+  margin-right: 3px;
   cursor: default;
   float: left;
   line-height: 28px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .component span {
@@ -216,9 +217,17 @@
   line-height: 28px;
 }
 
+
+.component .value.fa-square-o:hover,
+.component .value.fa-check:hover {
+  color:#eee;
+}
+
 .component .value.fa-square-o,
 .component .value.fa-check {
   line-height: 30px;
+  display: initial;
+  cursor: pointer;
 }
 
 .component .value.array {
@@ -289,6 +298,31 @@
   border: 2px solid;
   display: block
   cursor: pointer;
+}
+
+.colorpicker-element.value {
+  padding-left: 30px;
+  position: relative;
+}
+
+.colorpicker-element.value input{
+  display: inline-block;
+  margin-right: 100px;
+}
+
+.colorpicker-element.value .input-group-addon {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.colorpicker-element .input-group-addon i {
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+  border: 2px solid;
 }
 
 .add-component {
