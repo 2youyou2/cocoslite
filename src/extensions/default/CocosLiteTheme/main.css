@@ -155,12 +155,13 @@
   color: #adb9bd;
   top: 0px;
 }
-
+ul ul {
+  list-style: none;
+}
 
 #inspector-content .inspector {
   margin: 5px;
   overflow: auto;
-  height: 100%;
   position: relative;
 }
 
@@ -327,14 +328,74 @@
 
 .add-component {
   text-align: center;
-  width: 100%;
   display: none;
+  transition: 0.25s;
+  background-color: #787E86;
+  padding: 5px 19px;
+  font-size: 17.5px;
+  border-radius: 6px;
+  margin: 0px 30px;
+  cursor: pointer;
+}
+.add-component:hover {
+  background-color: #7E8690;
+}
+
+
+#add-component-panel {
+  position: relative;
+}
+#add-component-panel .root {
+  position: relative;
+  transition: 0.3s;
+}
+#add-component-panel ul {
+  list-style: none;
+  margin: 0px;
+}
+
+#add-component-panel ul ul {
+  position: absolute;
+  top: 0px;
+}
+#add-component-panel .content {
+  display: block;
+  width: 160px;
+  position: relative;
+  padding: 3px
+}
+#add-component-panel li.select > .content {
+  background: #aaa;
+}
+#add-component-panel li ul {
+  display: none;
+}
+#add-component-panel li.select ul {
+  display: initial;
+}
+#add-component-panel .fa-caret-right.indicate {
+  position: absolute;
+  right: 0px;
+}
+#add-component-panel .fa-caret-left.indicate {
+  position: absolute;
+  left: 0px;
+}
+#add-component-panel .title {
+  text-align: center;
+  border-bottom: 3px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .component-manager {
   position: absolute;
 }
 
+.show-assets-dialog {
+  max-width: 550px!important;
+}
 .asset-viewer {
   display:inline-block;
   background-size: 100px 100px;
@@ -349,13 +410,18 @@
   position: absolute;
   width: 100px;
   text-align: center;
+  line-height: 28px;
 }
 .asset-row {
-float: left;
-height: 120px;
-margin: 10px;
+  float: left;
+  margin: 11px;
+  border: 4px solid #C7A8A8;
+  cursor: pointer;
+  transition: 0.25s;
 }
-
+.asset-row:hover {
+  border: 4px solid #AE8E8E;
+}
 .top-bar {
   height: 35px;
 }
