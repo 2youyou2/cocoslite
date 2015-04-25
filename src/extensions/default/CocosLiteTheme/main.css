@@ -611,8 +611,9 @@ body {
 #editor-holder {
   background: #535358;
   overflow: hidden;
-  height: 100%!important;
+  display: block;
 }
+
 
 #main-toolbar {
   display: none;
