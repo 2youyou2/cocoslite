@@ -388,6 +388,22 @@ ul ul {
   margin-bottom: 5px;
   font-weight: bold;
 }
+#add-component-panel #newScriptPanel {
+  height: 100%;
+}
+#add-component-panel #newScriptPanel li {
+  height: 100%;
+}
+#add-component-panel #newScriptPanel li input {
+  display: block;
+  width: 150px;
+  margin-top: 5px;
+}
+#add-component-panel #newScriptPanel button {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;  
+}
 
 .component-manager {
   position: absolute;
