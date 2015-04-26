@@ -337,9 +337,6 @@
             "displayKey": "Alt-↓"
         }
     ],
-    "navigate.newRule":  [
-        "Ctrl-Alt-N"
-    ],
     "file.rename":  [
         "F2"
     ],
@@ -360,5 +357,8 @@
     ],
     "cl.component.new": [
         "Ctrl-Shift-A"
+    ],
+    "cl.gameObject.new.child": [
+        "Ctrl-Alt-N"
     ]
 }
