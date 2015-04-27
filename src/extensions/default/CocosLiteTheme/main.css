@@ -1,9 +1,14 @@
 
 @import url("Font-Awesome/css/font-awesome.css");
+@import url("iconicfill/iconicfill.css");
 
 /* fontawesome */
 [class*="fa-"]:before {
   font-family: 'FontAwesome', sans-serif;
+}
+
+[class*="iconicfill-"]:before {
+  font-family: 'IconicFill', sans-serif;
 }
 
 .panel-header {
@@ -440,6 +445,32 @@ ul ul {
 }
 .top-bar {
   height: 35px;
+}
+
+.control-tool {
+  float: left;
+  margin-left: 150px;
+
+}
+.control-tool .icon {
+  width: 30px;
+  height: 30px;
+  vertical-align: -webkit-baseline-middle;
+  cursor: pointer;
+  font-size: 15px;
+  color: #fff;
+  padding: 2px 4px;
+  margin: 2px;
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 2px;
+  transition: background 0.2s ease-out, opacity 0.2s ease-out, color 0.2s ease-out;
+}
+
+.control-tool .icon:hover {
+  background: #95a5a6;
+}
+.control-tool .icon.active {
+  background-color: #068eb0;
 }
 
 #play-bar {
