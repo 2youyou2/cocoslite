@@ -24,9 +24,21 @@
   height: 25px;
 }
 
+#fgCanvas {
+  position: absolute;
+  top: 0px;
+  outline: 0px;
+}
+.scene {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
 #hierarchy-content {
   color: #adb9bd;
   outline-width: 0px;
+  overflow: auto;
 }
 
 .jstree-brackets li a {
