@@ -26,6 +26,7 @@
 
 #hierarchy-content {
   color: #adb9bd;
+  outline-width: 0px;
 }
 
 .jstree-brackets li a {
