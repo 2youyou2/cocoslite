@@ -29,6 +29,9 @@
   top: 0px;
   outline: 0px;
 }
+#fgCanvas.control-hand {
+  cursor:-webkit-grab;
+}
 .scene {
   width: 100%;
   height: 100%;
@@ -465,7 +468,7 @@ ul ul {
   margin-left: 150px;
 
 }
-.control-tool .icon {
+.cl-icon-button {
   width: 30px;
   height: 30px;
   vertical-align: -webkit-baseline-middle;
@@ -479,13 +482,16 @@ ul ul {
   transition: background 0.2s ease-out, opacity 0.2s ease-out, color 0.2s ease-out;
 }
 
-.control-tool .icon:hover {
+.cl-icon-button:hover {
   background: #95a5a6;
 }
-.control-tool .icon.active {
+.cl-icon-button.active {
   background-color: #068eb0;
 }
 
+#top-bar {
+  margin-top: 5px;
+}
 #play-bar {
   width: 100%;
   height: 100%;
@@ -514,30 +520,85 @@ ul ul {
   opacity: 1.0;
 }
 
-#play-bar .game-control-btn {
-  vertical-align: -webkit-baseline-middle;
-  cursor: pointer;
-  font-size: 15px;
-  color: #fff;
-  padding: 2px 4px;
-  margin: 2px;
-  border: 1px solid rgba(255,255,255,0.6);
-  border-radius: 2px;
-  transition: background 0.2s ease-out, opacity 0.2s ease-out, color 0.2s ease-out;
-}
-
-#play-bar .game-control-btn:hover {
-  background: #95a5a6;
-}
-
-#play-bar .game-control-btn.checked {
-  background: #068eb0!important;
-}
 
 #Cocos2dGameContainer {
   margin: initial!important;
 }
 
+.canvas-control-bar {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  padding-bottom: 12px;
+  width: 30px;
+  transition: 0.4s;
+  opacity: 0.5;
+}
+.canvas-control-bar:hover{
+  opacity: 1;
+}
+.canvas-control-bar .cl-icon-button {
+  width: 12px;
+  height: 17px;
+  display: block;
+  margin-top: 6px;
+}
+
+.ui-slider {
+  position: relative;
+  background: #e8edf2;
+  border-radius: 32px;
+  width: 6px;
+  display: block;
+  height: 120px;
+  margin-left: 10px;
+}
+
+.ui-slider-handle {
+  background-color: #16a085;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 10px;
+  height: 9px;
+  margin-bottom: -4px;
+  position: absolute;
+  left: -2px;
+  z-index: 2;
+  -webkit-transition: background 0.25s;
+  -moz-transition: background 0.25s;
+  -o-transition: background 0.25s;
+  transition: background 0.25s;
+  -webkit-backface-visibility: hidden;
+}
+.ui-slider-handle[style*='100'] {
+    margin-bottom: -4px;
+}
+.ui-slider-handle:hover, .ui-slider-handle:focus {
+    background-color: #2fe2bf;
+    outline: none;
+}
+.ui-slider-handle:active {
+    background-color: #16a085;
+}
+
+.ui-slider-range {
+    background-color: #1abc9c;
+    border-radius: 30px;
+    display: block;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+}
+
+.ui-slider-segment {
+    background-color: #d6dbe0;
+    border-radius: 50%;
+    float: left;
+    height: 6px;
+    margin: 3px -6px 0 25%;
+    width: 6px;
+}
 /**
 * Custom Work For Brackets (https://github.com/DH3ALEJANDRO/custom-work-for-brackets)
 * --------------------------------------------------------------------*/
@@ -620,7 +681,7 @@ body {
 .main-view {
   background: #2b2b2b;
   position: absolute;
-  top: 35px;
+  top: 40px;
   bottom: 0px;
   width: 100%;
   height: initial;
