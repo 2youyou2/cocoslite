@@ -360,5 +360,8 @@
     ],
     "cl.gameObject.new.child": [
         "Ctrl-Alt-N"
+    ],
+    "cl.simulate": [
+        "Ctrl-."
     ]
 }
