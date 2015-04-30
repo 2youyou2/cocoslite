@@ -520,6 +520,35 @@ ul ul {
   opacity: 1.0;
 }
 
+#play-bar .simulator {
+  margin-left: 60px;
+}
+#play-bar .simulator .simulator-content {
+  background-color: #7FCB31;
+  color: #eee;
+  padding: 5px 20px;
+  vertical-align: -webkit-baseline-middle;
+  margin-right: 2px;
+  cursor: pointer;
+}
+#play-bar .simulator .simulator-configure {
+  background-color: #7FCB31;
+  padding: 5px 9px;
+  vertical-align: -webkit-baseline-middle;
+  cursor: pointer;
+}
+
+.configrue-title {
+  font-size: 20px;
+  /*color: #1abc9c;*/
+}
+
+.configure-content {
+  padding-left: 20px;
+}
+.configure-content input {
+  width: 60%;
+}
 
 #Cocos2dGameContainer {
   margin: initial!important;
