@@ -15,7 +15,7 @@
 	url = https://github.com/marijnh/acorn.git
 [submodule "src/thirdparty/requirejs"]
 	path = src/thirdparty/requirejs
-	url = https://github.com/jrburke/requirejs.git
+url=https://github.com/2youyouo2/requirejs.git
 [submodule "src/thirdparty/text"]
 	path = src/thirdparty/text
 	url = https://github.com/requirejs/text.git
