@@ -265,6 +265,12 @@ define(function (require, exports, module) {
         // reposition it if the element size changes externally
         function repositionResizer(elementSize) {
             var resizerPosition = elementSize || 1;
+
+            if(_attachToParent) {
+                resizerPosition += element.offsetLeft;
+                resizerPosition += element.offsetTop;
+            }
+            
             if (position === POSITION_RIGHT || position === POSITION_BOTTOM) {
                 $resizer.css(resizerCSSPosition, resizerPosition);
             }

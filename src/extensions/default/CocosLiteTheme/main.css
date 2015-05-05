@@ -90,7 +90,6 @@
   font-size: 13px;
   font-family: "Lato","Helvetica Neue",Arial,sans-serif;
   color: #adb9bd;
-  height: 100%;
   position: relative;
 }
 .ui-tree-nodes {
@@ -357,6 +356,7 @@ ul ul {
   border-radius: 6px;
   margin: 0px 30px;
   cursor: pointer;
+  margin-bottom: 5px;
 }
 .add-component:hover {
   background-color: #7E8690;
