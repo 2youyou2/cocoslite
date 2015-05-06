@@ -405,7 +405,7 @@ define(function (require, exports, module) {
                     });
                 }
             } else {
-                if(brackets.editorType === "IDE") {
+                if(cl.editorType === "IDE") {
                     this.props.actions.setSelected(this.myPath());
                 } else {
                     this.props.actions.setSelected(this.myPath(), true);

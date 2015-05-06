@@ -286,7 +286,7 @@ define(function (require, exports, module) {
         var result = new $.Deferred();
 
         // cocoslite
-        if(fullPath.endWith(".js") && brackets.editorType === "GameEditor") {
+        if(fullPath.endWith(".js") && cl.editorType === "GameEditor") {
             // Commands.CMD_OPEN_SCRIPT
             CommandManager.execute("cl.openScript", fullPath);
             return result.promise();
