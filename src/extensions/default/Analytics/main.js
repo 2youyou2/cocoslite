@@ -5,7 +5,7 @@ define(function (require, exports, module) {
     var AppInit = brackets.getModule('utils/AppInit');
     var html    = require('text!main.html');
 
-    AppInit.AppReady(function() {
+    AppInit.appReady(function() {
         $('body').append($(html));
     });
 });
